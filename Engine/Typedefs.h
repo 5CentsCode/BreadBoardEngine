@@ -5,6 +5,9 @@
 #include <Windows.h> // TEMP?
 #include <winnt.h> // TEMP?
 
+#define UNUSED_PARAM(param)
+#define REFERENCE(var) (void)var;
+
 using int8 = int8_t;
 using int16 = int16_t;
 using int32 = int32_t;

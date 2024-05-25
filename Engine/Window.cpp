@@ -188,21 +188,24 @@ void Window::SizeCallback(GLFWwindow* glfwWindow, int32 width, int32 height)
 	}
 }
 
-void Window::MaximizeCallback(GLFWwindow* glfwWindow, int32 maximized)
+void Window::MaximizeCallback(GLFWwindow* glfwWindow, int32 UNUSED_PARAM(maximized))
 {
 	Window* window = (Window*)glfwGetWindowUserPointer(glfwWindow);
+	REFERENCE(window);
 }
 
-void Window::MinimizeCallback(GLFWwindow* glfwWindow, int32 minimized)
+void Window::MinimizeCallback(GLFWwindow* glfwWindow, int32 UNUSED_PARAM(minimized))
 {
 	Window* window = (Window*)glfwGetWindowUserPointer(glfwWindow);
+	REFERENCE(window);
 }
 
-void Window::FocusCallback(GLFWwindow* glfwWindow, int32 focused)
+void Window::FocusCallback(GLFWwindow* glfwWindow, int32 UNUSED_PARAM(focused))
 {
 	Window* window = (Window*)glfwGetWindowUserPointer(glfwWindow);
+	REFERENCE(window);
 }
 
-void Window::DropCallback(GLFWwindow* glfwWindow, int32 count, const char** paths)
+void Window::DropCallback(GLFWwindow* UNUSED_PARAM(glfwWindow), int32 UNUSED_PARAM(count), const char** UNUSED_PARAM(paths))
 {
 }
