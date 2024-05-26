@@ -1,11 +1,12 @@
 #include "Application.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
+#include "ConsoleWindow.h"
 #include "Window.h"
 
 void Application::Initialize(void)
 {
+	ConsoleWindow::CreateNewConsole();
 }
 
 void Application::Run(void)
@@ -25,4 +26,6 @@ void Application::Run(void)
 void Application::Shutdown(void)
 {
 	glfwTerminate();
+
+	ConsoleWindow::ReleaseConsole();
 }

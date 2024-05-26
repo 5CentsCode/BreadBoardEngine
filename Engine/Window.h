@@ -52,7 +52,4 @@ private:
 private:
 
 	struct GLFWwindow* m_window;
-
-	glm::ivec2 m_size;
-	glm::ivec2 m_position;
 };

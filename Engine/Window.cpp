@@ -54,7 +54,6 @@ bool Window::IsMaximized() const
 
 void Window::SetPosition(int32 x, int32 y)
 {
-	m_position = glm::ivec2(x, y);
 	glfwSetWindowPos(m_window, x, y);
 }
 
@@ -78,7 +77,6 @@ void Window::SetWindowMonitor(uint8 monitor)
 
 void Window::SetSize(int32 width, int32 height)
 {
-	m_size = glm::ivec2(width, height);
 	glfwSetWindowSize(m_window, width, height);
 	glViewport(0, 0, width, height);
 }
@@ -102,12 +100,10 @@ void Window::ToggleFullscreen()
 {
 	if (IsFullScreen())
 	{
-		glfwSetWindowMonitor(m_window, NULL, m_position.x, m_position.y, m_size.x, m_size.y, 0);
+		// glfwSetWindowMonitor(m_window, NULL, m_position.x, m_position.y, m_size.x, m_size.y, 0);
 	}
 	else
 	{
-		m_position = GetPosition();
-
 		GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
 
