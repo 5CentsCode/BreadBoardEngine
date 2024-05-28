@@ -1,4 +1,7 @@
 #include "ConsoleWindow.h"
+
+#if _DEBUG
+
 #include <iostream>
 #include <Windows.h>
 
@@ -130,3 +133,5 @@ bool ConsoleWindow::RedirectConsoleIO()
 
 	return result;
 }
+
+#endif

@@ -5,8 +5,20 @@
 #include <Windows.h> // TEMP?
 #include <winnt.h> // TEMP?
 
+#ifdef _DEBUG
+
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+#endif //  _DEBUG
+
 #define UNUSED_PARAM(param)
 #define REFERENCE(var) (void)var;
+
+#define INTERNAL static
+#define GLOBAL_VAR static
+#define PERSISTENT_VAR static
 
 using int8 = int8_t;
 using int16 = int16_t;
@@ -17,6 +29,8 @@ using uint8 = uint8_t;
 using uint16 = uint16_t;
 using uint32 = uint32_t;
 using uint64 = uint64_t;
+
+using Guid = uint64;
 
 #define VEC3_RIGHT glm::vec3(1.0f, 0.0f, 0.0f)
 #define VEC3_LEFT (-VEC3_RIGHT)

@@ -1,4 +1,7 @@
 #pragma once
+
+#if _DEBUG
+
 #include <Typedefs.h>
 
 class ConsoleWindow
@@ -17,3 +20,4 @@ private:
 	static bool RedirectConsoleIO();
 };
 
+#endif

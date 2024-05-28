@@ -1,6 +1,8 @@
 #pragma once
 #include "Typedefs.h"
 
+#include "ResourceManager.h" // TEMP
+
 class Application
 {
 public:
@@ -10,4 +12,8 @@ public:
 	void Run(void);
 
 	void Shutdown(void);
+
+private:
+
+	ResourceManager m_resourceManager;
 };
