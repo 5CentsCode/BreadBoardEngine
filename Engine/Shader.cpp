@@ -107,13 +107,13 @@ void Shader::PopulateUniformLocationMap()
 
 inline bool Shader::TryToFindUniform(const char* name, int32& uniformLocation) const
 {
-	assert(!IsBound());
+	assert(IsBound());
 
 	uint64 nameHash = std::hash<std::string>{}(name);
 	auto uniform = m_uniformLocationMap.find(nameHash);
 	bool uniformExists = uniform != m_uniformLocationMap.end();
 
-	assert(!uniformExists);
+	assert(uniformExists);
 	uniformLocation = uniform->second;
 
 	return uniformExists;

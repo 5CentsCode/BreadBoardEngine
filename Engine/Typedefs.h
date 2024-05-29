@@ -2,16 +2,12 @@
 #include <stdint.h>
 #include <glm/glm.hpp>
 
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #include <Windows.h> // TEMP?
-#include <winnt.h> // TEMP?
 
-#ifdef _DEBUG
-
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-
-#endif //  _DEBUG
+#define GLM_ENABLE_EXPERIMENTAL 1
+#include <glm/glm.hpp>
 
 #define UNUSED_PARAM(param)
 #define REFERENCE(var) (void)var;
