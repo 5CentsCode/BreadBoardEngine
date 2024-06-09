@@ -21,16 +21,31 @@ set(GLFW_INSTALL OFF CACHE BOOL  "GLFW lib only")
 set(GLAD_GL)
 set(BUILD_SHARED_LIBS OFF)
 
-add_subdirectory(thirdparty/glad)
-set_target_properties(glad PROPERTIES FOLDER thirdparty/glad)
+add_subdirectory(ThirdParty/entt)
 
-add_subdirectory(thirdparty/glfw)
-include_directories(thirdparty/glfw/include)
-set_target_properties(glfw PROPERTIES FOLDER thirdparty/GLFW3)
-set_target_properties(update_mappings PROPERTIES FOLDER thirdparty/GLFW3)
+add_subdirectory(ThirdParty/freetype)
+set_target_properties(freetype PROPERTIES FOLDER ThirdParty/freetype)
+target_compile_options(freetype PRIVATE
+    "/wd4267;" # disable "unknown pragma 'mark'" warnings
+)
 
-add_subdirectory(thirdparty/glm)
-set_target_properties(glm PROPERTIES FOLDER thirdparty/glm)
+add_subdirectory(ThirdParty/glad)
+set_target_properties(glad PROPERTIES FOLDER ThirdParty/glad)
+
+add_subdirectory(ThirdParty/glfw)
+include_directories(ThirdParty/glfw/include)
+set_target_properties(glfw PROPERTIES FOLDER ThirdParty/GLFW3)
+set_target_properties(update_mappings PROPERTIES FOLDER ThirdParty/GLFW3)
+
+add_subdirectory(ThirdParty/glm)
+set_target_properties(glm PROPERTIES FOLDER ThirdParty/glm)
+
+add_subdirectory(ThirdParty)
+set_target_properties(ImGui PROPERTIES FOLDER ThirdParty/ImGui)
+
+add_subdirectory(ThirdParty/tinyobjloader)
+set_target_properties(tinyobjloader PROPERTIES FOLDER ThirdParty/tinyobjloader)
+set_target_properties(uninstall PROPERTIES FOLDER ThirdParty/tinyobjloader)
 
 if(MSVC)
     SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:mainCRTStartup" )

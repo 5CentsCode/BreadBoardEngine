@@ -2,7 +2,7 @@
 
 #if _DEBUG
 
-#include <Typedefs.h>
+#include "Typedefs.h"
 
 class ConsoleWindow
 {
