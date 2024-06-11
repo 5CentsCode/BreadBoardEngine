@@ -6,6 +6,7 @@
 
 class Shader;
 class Mesh;
+class Texture;
 
 class ResourceManager
 {
@@ -16,6 +17,7 @@ public:
 public:
 	std::shared_ptr<Shader> LoadShader(std::string name, std::string vertex, std::string fragmentFile);
 	std::shared_ptr<Mesh> LoadMesh(std::string filepath);
+	std::shared_ptr<Texture> LoadTexture(std::string filepath);
 
 	void Clear();
 

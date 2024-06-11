@@ -21,6 +21,10 @@ set(GLFW_INSTALL OFF CACHE BOOL  "GLFW lib only")
 set(GLAD_GL)
 set(BUILD_SHARED_LIBS OFF)
 
+add_subdirectory(ThirdParty)
+set_target_properties(ImGui PROPERTIES FOLDER ThirdParty/ImGui)
+set_target_properties(stb PROPERTIES FOLDER ThirdParty/stb)
+
 add_subdirectory(ThirdParty/entt)
 
 add_subdirectory(ThirdParty/freetype)
@@ -39,9 +43,6 @@ set_target_properties(update_mappings PROPERTIES FOLDER ThirdParty/GLFW3)
 
 add_subdirectory(ThirdParty/glm)
 set_target_properties(glm PROPERTIES FOLDER ThirdParty/glm)
-
-add_subdirectory(ThirdParty)
-set_target_properties(ImGui PROPERTIES FOLDER ThirdParty/ImGui)
 
 add_subdirectory(ThirdParty/tinyobjloader)
 set_target_properties(tinyobjloader PROPERTIES FOLDER ThirdParty/tinyobjloader)

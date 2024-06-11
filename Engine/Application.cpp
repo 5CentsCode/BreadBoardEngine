@@ -5,20 +5,21 @@
 
 #include "Mesh.h" // TEMP
 #include "Shader.h" // TEMP
+#include "Texture.h"
 #include "Components/Camera.h" // TEMP
 #include "Components/Transform.h" // TEMP
 
 glm::vec3 cubePositions[] = {
 	glm::vec3(0.0f,  0.0f,  0.0f),
-	glm::vec3(2.0f,  5.0f, 15.0f),
-	glm::vec3(-1.5f, -2.2f, 2.5f),
-	glm::vec3(-3.8f, -2.0f, 12.3f),
-	glm::vec3(2.4f, -0.4f, 3.5f),
-	glm::vec3(-1.7f,  3.0f, 7.5f),
-	glm::vec3(1.3f, -2.0f, 2.5f),
-	glm::vec3(1.5f,  2.0f, 2.5f),
-	glm::vec3(1.5f,  0.2f, 1.5f),
-	glm::vec3(-1.3f,  1.0f, 1.5f)
+	glm::vec3(2.0f,  5.0f, -15.0f),
+	glm::vec3(-1.5f, -2.2f, -2.5f),
+	glm::vec3(-3.8f, -2.0f, -12.3f),
+	glm::vec3(2.4f, -0.4f, -3.5f),
+	glm::vec3(-1.7f,  3.0f, -7.5f),
+	glm::vec3(1.3f, -2.0f, -2.5f),
+	glm::vec3(1.5f,  2.0f, -2.5f),
+	glm::vec3(1.5f,  0.2f, -1.5f),
+	glm::vec3(-1.3f,  1.0f, -1.5f)
 };
 
 void Application::Initialize(void)
@@ -30,16 +31,16 @@ void Application::Run(void)
 	Window window = Window(800, 600, "Hello Window");
 
 	// Resources need to be loaded after a window is created
-	std::shared_ptr<Shader> whiteShader = m_resourceManager.LoadShader("WhiteShader", std::string(PROJECT_ASSET_PATH) + "Shaders/White.vert", std::string(PROJECT_ASSET_PATH) + "Shaders/White.frag");
+	std::shared_ptr<Shader> whiteShader = m_resourceManager.LoadShader("TextureShader", std::string(PROJECT_ASSET_PATH) + "Shaders/Texture.vert", std::string(PROJECT_ASSET_PATH) + "Shaders/Texture.frag");
 	std::shared_ptr<Mesh> mesh = m_resourceManager.LoadMesh(std::string(PROJECT_ASSET_PATH) + "Models/cube.obj");
+	std::shared_ptr<Texture> texture = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/TestTexture.png");
 	whiteShader->Bind();
 
 	Component::Camera camera;
 	camera.SetAspectRatio((float)window.GetWidth() / (float)window.GetHeight());
 
 	Component::Transform cameraTransform;
-	cameraTransform.SetPosition(glm::vec3(0.0f, 0.0f, -3.0f));
-	cameraTransform.SetForward(glm::vec3(0.0f, 0.0f, 1.0f));
+	cameraTransform.SetPosition(glm::vec3(0.0f, 0.0f, 3.0f));
 
 	while (window.ShouldClose() == false)
 	{
@@ -55,6 +56,10 @@ void Application::Run(void)
 			cameraTransform.SetPosition(cameraTransform.GetPosition() - cameraTransform.GetRight() * cameraSpeed);
 		if (glfwGetKey((GLFWwindow*)window.GetHandle(), GLFW_KEY_D) == GLFW_PRESS)
 			cameraTransform.SetPosition(cameraTransform.GetPosition() + cameraTransform.GetRight() * cameraSpeed);
+		if (glfwGetKey((GLFWwindow*)window.GetHandle(), GLFW_KEY_Z) == GLFW_PRESS)
+			cameraTransform.SetPosition(cameraTransform.GetPosition() + cameraTransform.GetUp() * cameraSpeed);
+		if (glfwGetKey((GLFWwindow*)window.GetHandle(), GLFW_KEY_X) == GLFW_PRESS)
+			cameraTransform.SetPosition(cameraTransform.GetPosition() - cameraTransform.GetUp() * cameraSpeed);
 
 		glm::mat4 projection = camera.GetProjectionMatrix();
 		glm::mat4 view = glm::lookAt(cameraTransform.GetPosition(), cameraTransform.GetPosition() + cameraTransform.GetForward(), cameraTransform.GetUp());
@@ -63,12 +68,13 @@ void Application::Run(void)
 		whiteShader->SetUniform("View", view);
 
 		mesh->Bind();
+		texture->Bind();
 		for (unsigned int i = 0; i < 10; i++)
 		{
-			// calculate the model matrix for each object and pass it to shader before drawing
-			glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-			model = glm::translate(model, cubePositions[i]);
 			float angle = 20.0f * i;
+
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::translate(model, cubePositions[i]);
 			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 			whiteShader->SetUniform("Model", model);
 

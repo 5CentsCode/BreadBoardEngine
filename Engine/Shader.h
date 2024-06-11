@@ -8,7 +8,6 @@
 // to make sure all of our shaders are valid.
 #define MAX_UNIFORM_NAME_LENGTH 64
 
-struct VertexAttribute;
 class Shader : public Resource
 {
 public:

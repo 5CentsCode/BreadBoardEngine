@@ -17,7 +17,7 @@ set(sourceFiles
     
     "Components/Camera.h" "Components/Camera.cpp"
     "Components/Transform.h" "Components/Transform.cpp"
-)
+ "Texture.h" "Texture.cpp")
 
 foreach( sourceFile IN ITEMS ${BreadBoardSource} )
 	get_filename_component( sourceFilePath "${sourceFile}" PATH )
@@ -32,5 +32,5 @@ add_executable(${AppName} WIN32 ${sourceFiles})
 target_compile_definitions(${AppName} PRIVATE PROJECT_ASSET_PATH="${CMAKE_SOURCE_DIR}/Assets/")
 target_include_directories(${AppName} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_link_libraries(${AppName} LINK_PRIVATE glfw glad freetype tinyobjloader)
-target_link_libraries(${AppName} LINK_PUBLIC EnTT::EnTT glm::glm ImGui)
+target_link_libraries(${AppName} PRIVATE freetype glad glfw stb tinyobjloader)
+target_link_libraries(${AppName} PUBLIC EnTT::EnTT glm::glm ImGui)

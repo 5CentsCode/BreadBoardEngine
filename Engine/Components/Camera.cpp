@@ -129,16 +129,5 @@ void Camera::CalculateProjectionMatrix()
 		}
 	}
 
-	// Invert the scale of the X axis, so that:
-	// Z+ goes into the screen and Z- goes out of the screen.
-	// Which is inverted from right-handedness Z orientation
-
-	//  ^ +y
-	//  |
-	//  |     7 +z
-	//  |   /
-	//  | /
-	//  *-------> +x
-	m_projectionMatrix = glm::scale(m_projectionMatrix, glm::vec3(-1.0f, 1.0f, 1.0f));
 	m_dirty = false;
 }

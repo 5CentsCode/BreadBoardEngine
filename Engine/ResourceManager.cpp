@@ -1,11 +1,15 @@
+#define TINYOBJ_LOADER_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+
 #include "ResourceManager.h"
 #include <filesystem>
 #include <fstream>
-#include <vector>
-#define TINYOBJ_LOADER_IMPLEMENTATION
+#include <stb_image.h>
 #include <tiny_obj_loader.h>
+#include <vector>
 #include "Mesh.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "Vertex.h"
 
 ResourceManager::ResourceManager()
@@ -36,8 +40,6 @@ std::shared_ptr<Mesh> ResourceManager::LoadMesh(std::string filepath)
 	assert(m_resources.find(guid) == m_resources.end());
 
 	tinyobj::ObjReaderConfig reader_config;
-	reader_config.mtl_search_path = "./"; // Path to material files
-
 	tinyobj::ObjReader reader;
 
 	if (!reader.ParseFromFile(filepath, reader_config))
@@ -118,6 +120,32 @@ std::shared_ptr<Mesh> ResourceManager::LoadMesh(std::string filepath)
 	m_resources.emplace(guid, newMesh);
 
 	return newMesh;
+}
+
+std::shared_ptr<Texture> ResourceManager::LoadTexture(std::string filepath)
+{
+	Guid guid = GetGuid(filepath);
+	assert(m_resources.find(guid) == m_resources.end());
+
+	int width;
+	int height;
+	int channels;
+	uint8* data = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
+	std::vector<uint8> pixelData(data, data + (width * height * channels));
+	
+	if (data != nullptr)
+	{
+	}
+	else
+	{
+		printf("Texture failed to load at path:\n%s", filepath.c_str());
+	}
+
+	stbi_image_free(data);
+
+	std::shared_ptr<Texture> newTexture = std::make_shared<Texture>(guid, filepath, pixelData, width, height, channels);
+	newTexture->Upload();
+	return newTexture;
 }
 
 void ResourceManager::Clear()
