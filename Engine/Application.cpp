@@ -5,9 +5,10 @@
 
 #include "Mesh.h" // TEMP
 #include "Shader.h" // TEMP
-#include "Texture.h"
+#include "Texture.h" // TEMP
 #include "Components/Camera.h" // TEMP
 #include "Components/Transform.h" // TEMP
+#include "Input.h"
 
 glm::vec3 cubePositions[] = {
 	glm::vec3(0.0f,  0.0f,  0.0f),
@@ -48,18 +49,44 @@ void Application::Run(void)
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 		float cameraSpeed = static_cast<float>(2.5 * 0.01f);
-		if (glfwGetKey((GLFWwindow*)window.GetHandle(), GLFW_KEY_W) == GLFW_PRESS)
-			cameraTransform.SetPosition(cameraTransform.GetPosition() + cameraTransform.GetForward() * cameraSpeed);
-		if (glfwGetKey((GLFWwindow*)window.GetHandle(), GLFW_KEY_S) == GLFW_PRESS)
-			cameraTransform.SetPosition(cameraTransform.GetPosition() - cameraTransform.GetForward() * cameraSpeed);
-		if (glfwGetKey((GLFWwindow*)window.GetHandle(), GLFW_KEY_A) == GLFW_PRESS)
-			cameraTransform.SetPosition(cameraTransform.GetPosition() - cameraTransform.GetRight() * cameraSpeed);
-		if (glfwGetKey((GLFWwindow*)window.GetHandle(), GLFW_KEY_D) == GLFW_PRESS)
-			cameraTransform.SetPosition(cameraTransform.GetPosition() + cameraTransform.GetRight() * cameraSpeed);
-		if (glfwGetKey((GLFWwindow*)window.GetHandle(), GLFW_KEY_Z) == GLFW_PRESS)
-			cameraTransform.SetPosition(cameraTransform.GetPosition() + cameraTransform.GetUp() * cameraSpeed);
-		if (glfwGetKey((GLFWwindow*)window.GetHandle(), GLFW_KEY_X) == GLFW_PRESS)
-			cameraTransform.SetPosition(cameraTransform.GetPosition() - cameraTransform.GetUp() * cameraSpeed);
+		glm::vec3 cameraMovement = glm::vec3(0.0f);
+		if (Input::IsKeyDown(KeyCode::W))
+		{
+			cameraMovement += cameraTransform.GetForward() * cameraSpeed;
+		}
+		if (Input::IsKeyDown(KeyCode::S))
+		{
+			cameraMovement -= cameraTransform.GetForward() * cameraSpeed;
+		}
+		if (Input::IsKeyDown(KeyCode::D))
+		{
+			cameraMovement += cameraTransform.GetRight() * cameraSpeed;
+		}
+		if (Input::IsKeyDown(KeyCode::A))
+		{
+			cameraMovement -= cameraTransform.GetRight() * cameraSpeed;
+		}
+		if (Input::IsKeyDown(KeyCode::Z))
+		{
+			cameraMovement += cameraTransform.GetUp() * cameraSpeed;
+		}
+		if (Input::IsKeyDown(KeyCode::X))
+		{
+			cameraMovement -= cameraTransform.GetUp() * cameraSpeed;
+		}
+		cameraTransform.SetPosition(cameraTransform.GetPosition() + cameraMovement);
+
+		glm::vec2 mouseDelta = Input::GetMouseDelta();
+		if (Input::IsMouseButtonDown(MouseCode::Right))
+		{
+			const float rotationSpeed = 0.2f;
+
+			glm::quat yaw = glm::angleAxis((float)glm::radians(-mouseDelta.x * rotationSpeed), VEC3_UP);
+			glm::quat pitch = glm::angleAxis((float)glm::radians(-mouseDelta.y * rotationSpeed), cameraTransform.GetRight());
+			glm::quat orientation = glm::normalize(yaw * pitch);
+
+			cameraTransform.SetRotation(glm::normalize(orientation * cameraTransform.GetRotation()));
+		}
 
 		glm::mat4 projection = camera.GetProjectionMatrix();
 		glm::mat4 view = glm::lookAt(cameraTransform.GetPosition(), cameraTransform.GetPosition() + cameraTransform.GetForward(), cameraTransform.GetUp());
@@ -82,7 +109,7 @@ void Application::Run(void)
 		}
 
 		glfwSwapBuffers((GLFWwindow*)window.GetHandle());
-		glfwPollEvents();
+		Input::PollInputEvents();
 	}
 
 	whiteShader->Unbind();

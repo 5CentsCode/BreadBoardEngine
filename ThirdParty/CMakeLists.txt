@@ -29,12 +29,3 @@ target_include_directories(ImGui PUBLIC imgui)
 
 add_library(stb INTERFACE)
 target_include_directories(stb INTERFACE "stb")
-
-# include_directories("stb/")
-# set (STB_SOURCE
-# 	"stb_image.h"
-# )
-# list(TRANSFORM STB_SOURCE PREPEND "stb/")
-# 
-# add_library(stb INTERFACE ${STB_SOURCE})
-# target_include_directories(stb INTERFACE "stb/")

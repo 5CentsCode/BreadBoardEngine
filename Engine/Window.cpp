@@ -1,6 +1,7 @@
 #include "Window.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "Input.h"
 
 Window::Window(int32 width, int32 height, const char* title)
 {
@@ -18,6 +19,22 @@ Window::Window(int32 width, int32 height, const char* title)
 
 	m_window = glfwCreateWindow(width, height, title, nullptr, nullptr);
 	glfwSetWindowUserPointer(m_window, this);
+
+	glfwSetWindowPosCallback(m_window, PositionCallback);
+	glfwSetWindowSizeCallback(m_window, SizeCallback);
+	glfwSetWindowMaximizeCallback(m_window, MaximizeCallback);
+
+	glfwSetWindowIconifyCallback(m_window, MinimizeCallback);
+	glfwSetWindowFocusCallback(m_window, FocusCallback);
+	glfwSetDropCallback(m_window, DropCallback);
+
+	// Set input callback events
+	glfwSetKeyCallback(m_window, Input::KeyCallback);
+	glfwSetCharCallback(m_window, Input::CharCallback);
+	glfwSetMouseButtonCallback(m_window, Input::MouseButtonCallback);
+	glfwSetCursorPosCallback(m_window, Input::MouseCursorPosCallback);
+	glfwSetScrollCallback(m_window, Input::MouseScrollCallback);
+	glfwSetCursorEnterCallback(m_window, Input::CursorEnterCallback);
 
 	glfwMakeContextCurrent(m_window);
 

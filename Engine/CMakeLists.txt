@@ -5,19 +5,22 @@ set(AppName "BBEngine")
 set(sourceFiles
     "Application.h" "Application.cpp"
     "ConsoleWindow.h" "ConsoleWindow.cpp"
+    "KeyCodes.h"
+    "Input.h" "Input.cpp"
     "Main.cpp"
     "Mesh.h" "Mesh.cpp"
     "Resource.h"
     "ResourceManager.h" "ResourceManager.cpp"
     "Shader.h" "Shader.cpp"
     "Typedefs.h"
+    "Texture.h" "Texture.cpp"
     "Vertex.h"
     "VertexAttribute.h"
     "Window.h" "Window.cpp"
     
     "Components/Camera.h" "Components/Camera.cpp"
     "Components/Transform.h" "Components/Transform.cpp"
- "Texture.h" "Texture.cpp")
+)
 
 foreach( sourceFile IN ITEMS ${BreadBoardSource} )
 	get_filename_component( sourceFilePath "${sourceFile}" PATH )
