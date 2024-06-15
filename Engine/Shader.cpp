@@ -113,8 +113,14 @@ inline bool Shader::TryToFindUniform(const char* name, int32& uniformLocation) c
 	auto uniform = m_uniformLocationMap.find(nameHash);
 	bool uniformExists = uniform != m_uniformLocationMap.end();
 
-	assert(uniformExists);
-	uniformLocation = uniform->second;
+	// TODO:
+	// I want to be notified when trying to bind to an unknown uniform
+	// But I also don't want the program to crash.
+	// assert(uniformExists);
+	if (uniformExists)
+	{
+		uniformLocation = uniform->second;
+	}
 
 	return uniformExists;
 }

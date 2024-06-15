@@ -28,7 +28,7 @@ bool ConsoleWindow::CreateNewConsole(uint16 bufferLength)
 		AdjustConsoleBuffer(bufferLength);
 		result = RedirectConsoleIO();
 	}
-	printf("Console Created");
+	printf("Console Created\n");
 
 	return result;
 }

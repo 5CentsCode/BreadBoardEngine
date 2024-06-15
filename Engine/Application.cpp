@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include "Window.h"
 
+#include "Material.h" // TEMP
 #include "Mesh.h" // TEMP
 #include "Shader.h" // TEMP
 #include "Texture.h" // TEMP
@@ -32,10 +33,23 @@ void Application::Run(void)
 	Window window = Window(800, 600, "Hello Window");
 
 	// Resources need to be loaded after a window is created
-	std::shared_ptr<Shader> whiteShader = m_resourceManager.LoadShader("TextureShader", std::string(PROJECT_ASSET_PATH) + "Shaders/Texture.vert", std::string(PROJECT_ASSET_PATH) + "Shaders/Texture.frag");
+	std::shared_ptr<Shader> whiteShader = m_resourceManager.LoadShader("MaterialShader", std::string(PROJECT_ASSET_PATH) + "Shaders/Material.vert", std::string(PROJECT_ASSET_PATH) + "Shaders/Material.frag");
 	std::shared_ptr<Mesh> mesh = m_resourceManager.LoadMesh(std::string(PROJECT_ASSET_PATH) + "Models/cube.obj");
 	std::shared_ptr<Texture> texture = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/TestTexture.png");
-	whiteShader->Bind();
+	
+	std::shared_ptr<Texture> cobblestoneAlbedo = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/cobblestone_pbr/cobblestone_albedo.png");
+	std::shared_ptr<Texture> cobblestoneNormal = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/cobblestone_pbr/cobblestone_normals.png");
+	std::shared_ptr<Texture> cobblestoneRoughness = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/cobblestone_pbr/cobblestone_roughness.png");
+	std::shared_ptr<Texture> cobblestoneMetal = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/cobblestone_pbr/cobblestone_metal.png");
+
+	Material cobblestoneMat = Material(0, std::string("Cobblestone_pbr"));
+	cobblestoneMat.SetShader(whiteShader);
+	cobblestoneMat.SetAlbedoTexture(cobblestoneAlbedo);
+	cobblestoneMat.SetNormalTexture(cobblestoneNormal);
+	cobblestoneMat.SetRoughnessTexture(cobblestoneRoughness);
+	cobblestoneMat.SetMetalTexture(cobblestoneMetal);
+
+	cobblestoneMat.Bind();
 
 	Component::Camera camera;
 	camera.SetAspectRatio((float)window.GetWidth() / (float)window.GetHeight());
@@ -95,7 +109,6 @@ void Application::Run(void)
 		whiteShader->SetUniform("View", view);
 
 		mesh->Bind();
-		texture->Bind();
 		for (unsigned int i = 0; i < 10; i++)
 		{
 			float angle = 20.0f * i;

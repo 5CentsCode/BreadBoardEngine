@@ -10,12 +10,14 @@ public:
 
 public:
 	void Upload();
-	void Bind();
+
+	int32 GetId() const;
 
 private:
 	bool m_dirty;
 
 	uint32 m_id;
+
 	std::vector<uint8> m_pixelData;
 	int32 m_width;
 	int32 m_height;
