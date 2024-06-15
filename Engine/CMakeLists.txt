@@ -20,7 +20,7 @@ set(sourceFiles
     
     "Components/Camera.h" "Components/Camera.cpp"
     "Components/Transform.h" "Components/Transform.cpp"
- "Material.h" "Material.cpp")
+ "Material.h" "Material.cpp" "Light.h")
 
 foreach( sourceFile IN ITEMS ${BreadBoardSource} )
 	get_filename_component( sourceFilePath "${sourceFile}" PATH )
