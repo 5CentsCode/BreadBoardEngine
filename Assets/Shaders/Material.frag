@@ -14,6 +14,14 @@ struct LightStruct
 	float Attenuation;
 };
 
+struct MaterialStruct
+{
+	sampler2D Albedo;
+	sampler2D Normal;
+	sampler2D Roughness;
+	sampler2D Metal;
+};
+
 struct VertexStruct
 {
 	vec3 Position;
@@ -24,25 +32,15 @@ struct VertexStruct
 };
 
 in VertexStruct Vertex;
-in vec3 FragPos;
+in vec3 ViewPosition;
 
-uniform sampler2D AlbedoTex;
-uniform sampler2D NormalTex;
-uniform sampler2D RoughnessTex;
-uniform sampler2D MetalTex;
-uniform LightStruct Lights;
+uniform MaterialStruct Material;
+uniform LightStruct Light;
+
 
 out vec4 FragColor;
 
 void main()
 {
-	vec4 ambient = vec4(Lights.Color * Lights.Intensity, 1.0);
-
-	vec3 norm = normalize(Vertex.Normal);
-	vec3 lightDir = normalize(Lights.Position - FragPos);
-
-	float diff = max(dot(norm, lightDir), 0.0);
-	vec4 diffuse = diff * vec4(Lights.Color, 1.0);
-
-	FragColor = (ambient + diffuse) * texture(AlbedoTex, Vertex.TexCoord);
+	FragColor = vec4(Light.Color.rgb * texture(Material.Albedo, Vertex.TexCoord).rgb, 1.0);
 }

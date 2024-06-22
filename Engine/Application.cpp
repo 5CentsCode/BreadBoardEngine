@@ -4,9 +4,9 @@
 #include "Window.h"
 
 #include "Components/Camera.h" // TEMP
+#include "Components/Light.h" // TEMP
 #include "Components/Transform.h" // TEMP
 #include "Input.h" // TEMP?
-#include "Light.h"
 #include "Material.h" // TEMP
 #include "Mesh.h" // TEMP
 #include "Shader.h" // TEMP
@@ -45,19 +45,25 @@ void Application::Run(void)
 	std::shared_ptr<Texture> cobblestoneRoughness = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/cobblestone_pbr/cobblestone_roughness.png");
 	std::shared_ptr<Texture> cobblestoneMetal = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/cobblestone_pbr/cobblestone_metal.png");
 
+	std::shared_ptr<Texture> containerAlbedo = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/container/albedo.png");
+	std::shared_ptr<Texture> containerRoughness = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/container/roughness.png");
+
+	std::shared_ptr<Texture> albedoTexture = m_resourceManager.CreateColorTexture(glm::vec4(1.0f, 0.5f, 0.31f, 1.0f));
+
 	Material cobblestoneMat = Material(0, std::string("Cobblestone_pbr"));
 	cobblestoneMat.SetShader(modelShader);
-	cobblestoneMat.SetAlbedoTexture(cobblestoneAlbedo);
+	cobblestoneMat.SetAlbedoTexture(albedoTexture);
 	cobblestoneMat.SetNormalTexture(cobblestoneNormal);
-	cobblestoneMat.SetRoughnessTexture(cobblestoneRoughness);
+	cobblestoneMat.SetRoughnessTexture(containerRoughness);
 	cobblestoneMat.SetMetalTexture(cobblestoneMetal);
 
 	Component::Transform lightTransform;
 	lightTransform.SetScale(glm::vec3(0.2f));
 	lightTransform.SetPosition(glm::vec3(1.2f, 1.0f, 2.0f));
+	lightTransform.SetForward(-lightTransform.GetPosition());
 	Component::Light light;
-	light.Color = glm::vec3(1.0f, 0.5f, 0.31f);
-	light.Intensity = 0.75f;
+	light.Color = glm::vec3(1.0f);
+	light.Intensity = 5.0f;
 
 	Component::Camera camera;
 	camera.SetAspectRatio((float)window.GetWidth() / (float)window.GetHeight());

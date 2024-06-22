@@ -8,6 +8,7 @@ set(sourceFiles
     "KeyCodes.h"
     "Input.h" "Input.cpp"
     "Main.cpp"
+    "Material.h" "Material.cpp"
     "Mesh.h" "Mesh.cpp"
     "Resource.h"
     "ResourceManager.h" "ResourceManager.cpp"
@@ -20,7 +21,7 @@ set(sourceFiles
     
     "Components/Camera.h" "Components/Camera.cpp"
     "Components/Transform.h" "Components/Transform.cpp"
- "Material.h" "Material.cpp" "Light.h")
+    "Components/Light.h")
 
 foreach( sourceFile IN ITEMS ${BreadBoardSource} )
 	get_filename_component( sourceFilePath "${sourceFile}" PATH )

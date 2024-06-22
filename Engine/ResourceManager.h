@@ -17,7 +17,10 @@ public:
 public:
 	std::shared_ptr<Shader> LoadShader(std::string name, std::string vertex, std::string fragmentFile);
 	std::shared_ptr<Mesh> LoadMesh(std::string filepath);
+
 	std::shared_ptr<Texture> LoadTexture(std::string filepath);
+	std::shared_ptr<Texture> CreateColorTexture(glm::u8vec4 color);
+	std::shared_ptr<Texture> CreateColorTexture(glm::vec4 color);
 
 	void Clear();
 

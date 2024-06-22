@@ -127,9 +127,9 @@ std::shared_ptr<Texture> ResourceManager::LoadTexture(std::string filepath)
 	Guid guid = GetGuid(filepath);
 	assert(m_resources.find(guid) == m_resources.end());
 
-	int width;
-	int height;
-	int channels;
+	int32 width;
+	int32 height;
+	int32 channels;
 	uint8* data = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
 	std::vector<uint8> pixelData(data, data + (width * height * channels));
 	
@@ -146,6 +146,36 @@ std::shared_ptr<Texture> ResourceManager::LoadTexture(std::string filepath)
 	std::shared_ptr<Texture> newTexture = std::make_shared<Texture>(guid, filepath, pixelData, width, height, channels);
 	newTexture->Upload();
 	return newTexture;
+}
+
+std::shared_ptr<Texture> ResourceManager::CreateColorTexture(glm::u8vec4 color)
+{
+	Guid guid = (color.r << 24) + (color.g << 16) + (color.b << 8) + color.a;
+	assert(m_resources.find(guid) == m_resources.end());
+
+	int32 width = 1;
+	int32 height = 1;
+	int32 channels = 4;
+	std::vector<uint8> pixelData =
+	{
+		color.r,
+		color.g,
+		color.b,
+		color.a
+	};
+
+	std::shared_ptr<Texture> newTexture = std::make_shared<Texture>(guid, "Color", pixelData, width, height, channels);
+	newTexture->Upload();
+	return newTexture;
+}
+
+std::shared_ptr<Texture> ResourceManager::CreateColorTexture(glm::vec4 color)
+{
+	uint8 r = uint8(glm::clamp(color.r, 0.0f, 1.0f) * UINT8_MAX);
+	uint8 g = uint8(glm::clamp(color.g, 0.0f, 1.0f) * UINT8_MAX);
+	uint8 b = uint8(glm::clamp(color.b, 0.0f, 1.0f) * UINT8_MAX);
+	uint8 a = uint8(glm::clamp(color.a, 0.0f, 1.0f) * UINT8_MAX);
+	return CreateColorTexture(glm::u8vec4(r, g, b, a));
 }
 
 void ResourceManager::Clear()

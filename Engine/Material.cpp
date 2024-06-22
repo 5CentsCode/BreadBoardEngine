@@ -41,10 +41,10 @@ void Material::Bind()
 {
 	m_shader->Bind();
 
-	m_shader->SetUniform("Albedo", 0);
-	m_shader->SetUniform("Normal", 1);
-	m_shader->SetUniform("Roughness", 2);
-	m_shader->SetUniform("Metal", 3);
+	m_shader->SetUniform("Material.Albedo", 0);
+	m_shader->SetUniform("Material.Normal", 1);
+	m_shader->SetUniform("Material.Roughness", 2);
+	m_shader->SetUniform("Material.Metal", 3);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_albedoTexture->GetId());
