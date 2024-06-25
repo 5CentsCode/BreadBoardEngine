@@ -19,7 +19,7 @@ public:
 	void SetRoughnessTexture(std::shared_ptr<Texture> roughnessTexture);
 	void SetMetalTexture(std::shared_ptr<Texture> metalTexture);
 
-	void Bind();
+	std::shared_ptr<Shader> Bind();
 
 private:
 

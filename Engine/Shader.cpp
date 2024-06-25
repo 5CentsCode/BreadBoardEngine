@@ -60,7 +60,11 @@ Shader::~Shader()
 
 void Shader::Bind() const
 {
-	assert(!IsBound());
+	// Don't want to assert, but this should notify when
+	// the shader is already bound.
+	// It indicates that there might be some performance improvements
+	// to be had, as a program should only be bound if it isn't already.
+	// assert(!IsBound());
 	glUseProgram(m_id);
 }
 

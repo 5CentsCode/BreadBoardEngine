@@ -37,7 +37,7 @@ void Material::SetMetalTexture(std::shared_ptr<Texture> metalTexture)
 	m_metalTexture = metalTexture;
 }
 
-void Material::Bind()
+std::shared_ptr<Shader> Material::Bind()
 {
 	m_shader->Bind();
 
@@ -54,4 +54,6 @@ void Material::Bind()
 	glBindTexture(GL_TEXTURE_2D, m_roughnessTexture->GetId());
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, m_metalTexture->GetId());
+
+	return m_shader;
 }

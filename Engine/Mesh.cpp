@@ -1,7 +1,4 @@
 #include "Mesh.h"
-#include "Mesh.h"
-#include "Mesh.h"
-#include "Mesh.h"
 #include <glad/glad.h>
 #include "Vertex.h"
 
@@ -66,7 +63,7 @@ void Mesh::Bind()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
 }
 
-uint32 Mesh::GetIndexCount() const
+int32 Mesh::GetIndexCount() const
 {
-	return uint32(m_indices.size());
+	return (int32)m_indices.size();
 }

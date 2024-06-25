@@ -14,7 +14,7 @@ public:
 	void Upload(bool dynamic);
 	void Bind();
 
-	uint32 GetIndexCount() const; // TEMP
+	int32 GetIndexCount() const; // TEMP
 
 private:
 	std::vector<Vertex> m_vertices;

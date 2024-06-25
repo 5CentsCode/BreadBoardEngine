@@ -31,10 +31,11 @@ namespace Component
 		void SetRight(glm::vec3 right);
 
 		glm::mat4 GetWorldMatrix();
+		glm::mat4 GetLookAtMatrix();
 
 	private:
 
-		void CalculateWorldMatrix();
+		void CalculateMatrices();
 		void SetTransformFromMatrix(glm::mat4& matrix);
 
 		void SetDirection(glm::vec3 globalDirection, glm::vec3& localDirection);
@@ -46,6 +47,7 @@ namespace Component
 		glm::vec3 m_scale;
 
 		glm::mat4 m_worldMatrix;
+		glm::mat4 m_lookAtMatrix;
 
 		bool m_dirty;
 	};

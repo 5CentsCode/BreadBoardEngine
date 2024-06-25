@@ -2,6 +2,17 @@ cmake_minimum_required(VERSION 3.1)
 
 set(AppName "BBEngine")
 
+set(componentFiles
+    "Components/Camera.h" "Components/Camera.cpp"
+    "Components/Transform.h" "Components/Transform.cpp"
+    "Components/Light.h"
+  "Components/MeshRenderer.h")
+
+set(systemFiles
+    "Systems/BaseSystem.h" 
+    "Systems/RenderSystem.h" "Systems/RenderSystem.cpp"
+)
+
 set(sourceFiles
     "Application.h" "Application.cpp"
     "ConsoleWindow.h" "ConsoleWindow.cpp"
@@ -18,10 +29,13 @@ set(sourceFiles
     "Vertex.h"
     "VertexAttribute.h"
     "Window.h" "Window.cpp"
-    
-    "Components/Camera.h" "Components/Camera.cpp"
-    "Components/Transform.h" "Components/Transform.cpp"
-    "Components/Light.h")
+)
+
+set(BreadBoardSource
+    ${componentFiles}
+    ${systemFiles}
+    ${sourceFiles}
+)
 
 foreach( sourceFile IN ITEMS ${BreadBoardSource} )
 	get_filename_component( sourceFilePath "${sourceFile}" PATH )
@@ -30,7 +44,11 @@ foreach( sourceFile IN ITEMS ${BreadBoardSource} )
     source_group( "${relativeSourceFilePath}" FILES "${sourceFile}" )
 endforeach()
 
-add_executable(${AppName} WIN32 ${sourceFiles})
+add_executable(${AppName} WIN32
+    ${componentFiles}
+    ${systemFiles}
+    ${sourceFiles}
+)
 #add_library(Engine STATIC ${SOURCE_FILES})
 
 target_compile_definitions(${AppName} PRIVATE PROJECT_ASSET_PATH="${CMAKE_SOURCE_DIR}/Assets/")

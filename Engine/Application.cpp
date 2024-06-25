@@ -5,12 +5,14 @@
 
 #include "Components/Camera.h" // TEMP
 #include "Components/Light.h" // TEMP
+#include "Components/MeshRenderer.h" // TEMP
 #include "Components/Transform.h" // TEMP
 #include "Input.h" // TEMP?
 #include "Material.h" // TEMP
 #include "Mesh.h" // TEMP
 #include "Shader.h" // TEMP
 #include "Texture.h" // TEMP
+#include "Systems/RenderSystem.h"
 
 glm::vec3 cubePositions[] = {
 	glm::vec3(0.0f,  0.0f,  0.0f),
@@ -57,6 +59,18 @@ void Application::Run(void)
 	cobblestoneMat.SetRoughnessTexture(containerRoughness);
 	cobblestoneMat.SetMetalTexture(cobblestoneMetal);
 
+	for (unsigned int i = 0; i < 10; i++)
+	{
+		entt::entity cubeEntity = m_registry.create();
+		Component::Transform& cubeTransform = m_registry.emplace<Component::Transform>(cubeEntity);
+		cubeTransform.SetPosition(cubePositions[i]);
+		Component::MeshRenderer& cubeRenderer = m_registry.emplace<Component::MeshRenderer>(cubeEntity);
+		cubeRenderer.Material = std::make_shared<Material>(cobblestoneMat);
+		cubeRenderer.Mesh = cubeMesh;
+	}
+
+	EntitySystem::RenderSystem renderSystem;
+
 	Component::Transform lightTransform;
 	lightTransform.SetScale(glm::vec3(0.2f));
 	lightTransform.SetPosition(glm::vec3(1.2f, 1.0f, 2.0f));
@@ -65,13 +79,12 @@ void Application::Run(void)
 	light.Color = glm::vec3(1.0f);
 	light.Intensity = 5.0f;
 
-	Component::Camera camera;
-	camera.SetAspectRatio((float)window.GetWidth() / (float)window.GetHeight());
-
-	Component::Transform cameraTransform;
+	entt::entity cameraEntity = m_registry.create();
+	Component::Transform& cameraTransform = m_registry.emplace<Component::Transform>(cameraEntity);
 	cameraTransform.SetPosition(glm::vec3(0.0f, 0.0f, 3.0f));
+	Component::Camera& cameraComponent = m_registry.emplace<Component::Camera>(cameraEntity);
+	cameraComponent.SetAspectRatio((float)window.GetWidth() / (float)window.GetHeight());
 
-	float rot = 0.0f;
 	while (window.ShouldClose() == false)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -117,8 +130,8 @@ void Application::Run(void)
 			cameraTransform.SetRotation(glm::normalize(orientation * cameraTransform.GetRotation()));
 		}
 
-		glm::mat4 projection = camera.GetProjectionMatrix();
-		glm::mat4 view = glm::lookAt(cameraTransform.GetPosition(), cameraTransform.GetPosition() + cameraTransform.GetForward(), cameraTransform.GetUp());
+		glm::mat4 projection = cameraComponent.GetProjectionMatrix();
+		glm::mat4 view = cameraTransform.GetLookAtMatrix();
 
 		lightShader->Bind();
 		icosphereMesh->Bind();
@@ -133,23 +146,21 @@ void Application::Run(void)
 		modelShader->SetUniform("View", view);
 		light.AddToShader(lightTransform, *modelShader);
 
-		for (unsigned int i = 0; i < 10; i++)
+		int i = 0;
+		m_registry.view<Component::Transform, Component::MeshRenderer>()
+			.each([&](const entt::entity UNUSED_PARAM(entity), Component::Transform& transform, Component::MeshRenderer& UNUSED_PARAM(meshRenderer))
 		{
-			float angle = rot * i;
+			float angle = 0.1f * i;
 
-			Component::Transform modelTransform;
-			modelTransform.SetPosition(cubePositions[i]);
+			transform.SetRotation(transform.GetRotation() * glm::angleAxis(glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f)));
 
-			glm::mat4 model = modelTransform.GetWorldMatrix();
-			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			modelShader->SetUniform("Model", model);
+			i++;
+		});
 
-			glDrawArrays(GL_TRIANGLES, 0, (int)cubeMesh->GetIndexCount());
-		}
+		renderSystem.Update(m_registry, 0.0f);
 
 		glfwSwapBuffers((GLFWwindow*)window.GetHandle());
 		Input::PollInputEvents();
-		rot += 0.1f;
 	}
 
 	modelShader->Unbind();

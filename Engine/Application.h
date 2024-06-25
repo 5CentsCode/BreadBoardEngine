@@ -1,5 +1,6 @@
 #pragma once
 #include "Typedefs.h"
+#include <entt/entt.hpp>
 
 #include "ResourceManager.h" // TEMP
 
@@ -16,4 +17,6 @@ public:
 private:
 
 	ResourceManager m_resourceManager;
+
+	entt::registry m_registry;
 };

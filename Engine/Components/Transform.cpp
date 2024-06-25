@@ -109,18 +109,30 @@ glm::mat4 Transform::GetWorldMatrix()
 {
 	if (m_dirty)
 	{
-		CalculateWorldMatrix();
+		CalculateMatrices();
 	}
 
 	return m_worldMatrix;
 }
 
-void Transform::CalculateWorldMatrix()
+glm::mat4 Component::Transform::GetLookAtMatrix()
+{
+	if (m_dirty)
+	{
+		CalculateMatrices();
+	}
+
+	return m_lookAtMatrix;
+}
+
+void Transform::CalculateMatrices()
 {
 	glm::mat4 worldMatrix = glm::identity<glm::mat4>();
 	worldMatrix = glm::translate(worldMatrix, m_position);
 	worldMatrix *= glm::mat4_cast(m_rotation);
 	worldMatrix = glm::scale(worldMatrix, m_scale);
+
+	m_lookAtMatrix = glm::lookAt(m_position, m_position + GetForward(), GetUp());
 
 	m_worldMatrix = worldMatrix;
 	m_dirty = false;
