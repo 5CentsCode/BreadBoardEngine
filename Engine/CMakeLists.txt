@@ -6,12 +6,14 @@ set(componentFiles
     "Components/Camera.h" "Components/Camera.cpp"
     "Components/Transform.h" "Components/Transform.cpp"
     "Components/Light.h"
-  "Components/MeshRenderer.h")
+    "Components/MeshRenderer.h"
+    "Components/RectTransform.h" "Components/RectTransform.cpp"
+ "Components/Sprite.h")
 
 set(systemFiles
-    "Systems/BaseSystem.h" 
+    "Systems/EnttSystem.h" 
     "Systems/RenderSystem.h" "Systems/RenderSystem.cpp"
-)
+  )
 
 set(sourceFiles
     "Application.h" "Application.cpp"
@@ -47,8 +49,7 @@ endforeach()
 add_executable(${AppName} WIN32
     ${componentFiles}
     ${systemFiles}
-    ${sourceFiles}
-)
+    ${sourceFiles})
 #add_library(Engine STATIC ${SOURCE_FILES})
 
 target_compile_definitions(${AppName} PRIVATE PROJECT_ASSET_PATH="${CMAKE_SOURCE_DIR}/Assets/")

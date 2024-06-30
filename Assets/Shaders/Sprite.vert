@@ -12,11 +12,9 @@ struct VertexStruct
 layout (location = 0) in VertexStruct inVertex;
 
 uniform mat4 Model;
-uniform mat4 View;
 uniform mat4 Projection;
 
 out VertexStruct Vertex;
-out vec3 ViewPosition;
 
 void main()
 {
@@ -24,10 +22,8 @@ void main()
 
 	Vertex = inVertex;
 	Vertex.Position = vec3(Model * vec4(inVertex.Position, 1.0));
+	Vertex.Normal = inverseModel * inVertex.Tangent;
 	Vertex.Normal = inverseModel * inVertex.Normal;
-	Vertex.Tangent = inverseModel * inVertex.Tangent;
 
-	ViewPosition = vec3(View[0][3], View[1][3], View[2][3]);
-
-	gl_Position = Projection * View * Model * vec4(inVertex.Position, 1.0);
+	gl_Position = Projection * Model * vec4(inVertex.Position, 1.0);
 }

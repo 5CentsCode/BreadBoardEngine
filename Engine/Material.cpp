@@ -41,19 +41,33 @@ std::shared_ptr<Shader> Material::Bind()
 {
 	m_shader->Bind();
 
-	m_shader->SetUniform("Material.Albedo", 0);
-	m_shader->SetUniform("Material.Normal", 1);
-	m_shader->SetUniform("Material.Roughness", 2);
-	m_shader->SetUniform("Material.Metal", 3);
+	if (m_albedoTexture != nullptr)
+	{
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, m_albedoTexture->GetId());
+		m_shader->SetUniform("Material.Albedo", 0);
+	}
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_albedoTexture->GetId());
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_normalTexture->GetId());
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, m_roughnessTexture->GetId());
-	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, m_metalTexture->GetId());
+	if (m_normalTexture != nullptr)
+	{
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, m_normalTexture->GetId());
+		m_shader->SetUniform("Material.Normal", 1);
+	}
+
+	if (m_roughnessTexture != nullptr)
+	{
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, m_roughnessTexture->GetId());
+		m_shader->SetUniform("Material.Roughness", 2);
+	}
+
+	if (m_metalTexture != nullptr)
+	{
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, m_metalTexture->GetId());
+		m_shader->SetUniform("Material.Metal", 3);
+	}
 
 	return m_shader;
 }

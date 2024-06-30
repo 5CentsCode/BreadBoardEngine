@@ -1,14 +1,21 @@
 #pragma once
-#include "BaseSystem.h"
+#include "EnttSystem.h"
+#include "Mesh.h"
+#include "Window.h"
 
-namespace EntitySystem
+namespace EnttSystem
 {
-	class RenderSystem : public BaseEntitySystem
+	class RenderSystem : public EnttSystem
 	{
 	public:
-		RenderSystem();
+		RenderSystem(Window* window, Mesh* quadMesh);
 		~RenderSystem();
 
 		void Update(entt::registry& registry, float deltaTime) override;
+
+	private:
+
+		Window* m_window;
+		Mesh* m_quadMesh;
 	};
 }

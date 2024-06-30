@@ -6,11 +6,12 @@ using namespace Component;
 
 Transform::Transform()
 {
+	m_dirty = true;
 	m_position = glm::vec3(0.0f);
 	m_rotation = glm::identity<glm::quat>();
 	m_scale = glm::vec3(1.0f);
 	m_worldMatrix = glm::identity<glm::mat4>();
-	m_dirty = true;
+	m_lookAtMatrix = glm::identity<glm::mat4>();
 }
 
 glm::vec3 Transform::GetPosition() const

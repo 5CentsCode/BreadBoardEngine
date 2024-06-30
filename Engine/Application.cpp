@@ -6,7 +6,9 @@
 #include "Components/Camera.h" // TEMP
 #include "Components/Light.h" // TEMP
 #include "Components/MeshRenderer.h" // TEMP
+#include "Components/RectTransform.h" // TEMP
 #include "Components/Transform.h" // TEMP
+#include "Components/Sprite.h" // TEMP
 #include "Input.h" // TEMP?
 #include "Material.h" // TEMP
 #include "Mesh.h" // TEMP
@@ -38,8 +40,10 @@ void Application::Run(void)
 	// Resources need to be loaded after a window is created
 	std::shared_ptr<Shader> modelShader = m_resourceManager.LoadShader("MaterialShader", std::string(PROJECT_ASSET_PATH) + "Shaders/Material.vert", std::string(PROJECT_ASSET_PATH) + "Shaders/Material.frag");
 	std::shared_ptr<Shader> lightShader = m_resourceManager.LoadShader("lightShader", std::string(PROJECT_ASSET_PATH) + "Shaders/LightEdit.vert", std::string(PROJECT_ASSET_PATH) + "Shaders/LightEdit.frag");
+	std::shared_ptr<Shader> spriteShader = m_resourceManager.LoadShader("SpriteShader", std::string(PROJECT_ASSET_PATH) + "Shaders/Sprite.vert", std::string(PROJECT_ASSET_PATH) + "Shaders/Sprite.frag");
 	std::shared_ptr<Mesh> cubeMesh = m_resourceManager.LoadMesh(std::string(PROJECT_ASSET_PATH) + "Models/cube.obj");
 	std::shared_ptr<Mesh> icosphereMesh = m_resourceManager.LoadMesh(std::string(PROJECT_ASSET_PATH) + "Models/icosphere.obj");
+	std::shared_ptr<Mesh> quadMesh = m_resourceManager.LoadMesh(std::string(PROJECT_ASSET_PATH) + "Models/quad.obj");
 	std::shared_ptr<Texture> texture = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/TestTexture.png");
 	
 	std::shared_ptr<Texture> cobblestoneAlbedo = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/cobblestone_pbr/cobblestone_albedo.png");
@@ -69,7 +73,17 @@ void Application::Run(void)
 		cubeRenderer.Mesh = cubeMesh;
 	}
 
-	EntitySystem::RenderSystem renderSystem;
+	entt::entity spriteEntity = m_registry.create();
+	Component::RectTransform& cubeTransform = m_registry.emplace<Component::RectTransform>(spriteEntity);
+	cubeTransform.SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	cubeTransform.SetScale(glm::vec3(10.0f, 10.0f, 1.0f));
+	Component::Sprite& spriteRenderer = m_registry.emplace<Component::Sprite>(spriteEntity);
+	Material spriteMat = Material(0, std::string("spriteMat"));
+	spriteMat.SetShader(spriteShader);
+	spriteRenderer.Material = std::make_shared<Material>(spriteMat);
+	spriteRenderer.Texture = cobblestoneAlbedo;
+
+	EnttSystem::RenderSystem renderSystem = EnttSystem::RenderSystem(&window, quadMesh.get());
 
 	Component::Transform lightTransform;
 	lightTransform.SetScale(glm::vec3(0.2f));
@@ -162,8 +176,6 @@ void Application::Run(void)
 		glfwSwapBuffers((GLFWwindow*)window.GetHandle());
 		Input::PollInputEvents();
 	}
-
-	modelShader->Unbind();
 }
 
 void Application::Shutdown(void)

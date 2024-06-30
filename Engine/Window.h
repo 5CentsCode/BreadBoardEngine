@@ -17,6 +17,7 @@ public:
 	int32 GetWidth() const;
 	int32 GetHeight() const;
 	glm::ivec2 GetSize() const;
+	float GetAspectRatio() const;
 
 	glm::ivec2 GetPosition() const;
 

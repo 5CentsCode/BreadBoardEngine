@@ -33,14 +33,16 @@ namespace Component
 		glm::mat4 GetWorldMatrix();
 		glm::mat4 GetLookAtMatrix();
 
-	private:
+	protected:
 
-		void CalculateMatrices();
+		virtual void CalculateMatrices();
 		void SetTransformFromMatrix(glm::mat4& matrix);
 
 		void SetDirection(glm::vec3 globalDirection, glm::vec3& localDirection);
 
-	private:
+	protected:
+
+		bool m_dirty;
 
 		glm::vec3 m_position;
 		glm::quat m_rotation;
@@ -48,7 +50,5 @@ namespace Component
 
 		glm::mat4 m_worldMatrix;
 		glm::mat4 m_lookAtMatrix;
-
-		bool m_dirty;
 	};
 }

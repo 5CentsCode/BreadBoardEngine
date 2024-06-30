@@ -1,15 +1,15 @@
 #pragma once
 #include <entt/entt.hpp>
 
-namespace EntitySystem
+namespace EnttSystem
 {
-	class BaseEntitySystem
+	class EnttSystem
 	{
 	public:
-		BaseEntitySystem()
+		EnttSystem()
 		{
 		}
-		virtual ~BaseEntitySystem()
+		virtual ~EnttSystem()
 		{
 		}
 

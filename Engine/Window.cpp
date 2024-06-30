@@ -171,6 +171,11 @@ glm::ivec2 Window::GetSize() const
 	return size;
 }
 
+float Window::GetAspectRatio() const
+{
+	return (float)GetWidth() / (float)GetHeight();
+}
+
 glm::ivec2 Window::GetPosition() const
 {
 	glm::ivec2 size;
