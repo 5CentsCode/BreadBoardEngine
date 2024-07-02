@@ -14,13 +14,13 @@ int main(void)
 	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
 #endif
 
-	Application app;
+	std::unique_ptr<Application> app = CreateApplication();
 
-	app.Initialize();
+	app->InternalInitialize();
+	app->InternalRun();
+	app->InternalShutdown();
 
-	app.Run();
-
-	app.Shutdown();
+	app.reset();
 
 #if _DEBUG
 	ConsoleWindow::ReleaseConsole();

@@ -1,6 +1,11 @@
 #include "Application.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "Input.h"
+
+/*
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include "Window.h"
 
 #include "Components/Camera.h" // TEMP
@@ -45,7 +50,7 @@ void Application::Run(void)
 	std::shared_ptr<Mesh> icosphereMesh = m_resourceManager.LoadMesh(std::string(PROJECT_ASSET_PATH) + "Models/icosphere.obj");
 	std::shared_ptr<Mesh> quadMesh = m_resourceManager.LoadMesh(std::string(PROJECT_ASSET_PATH) + "Models/quad.obj");
 	std::shared_ptr<Texture> texture = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/TestTexture.png");
-	
+
 	std::shared_ptr<Texture> cobblestoneAlbedo = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/cobblestone_pbr/cobblestone_albedo.png");
 	std::shared_ptr<Texture> cobblestoneNormal = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/cobblestone_pbr/cobblestone_normals.png");
 	std::shared_ptr<Texture> cobblestoneRoughness = m_resourceManager.LoadTexture(std::string(PROJECT_ASSET_PATH) + "Textures/cobblestone_pbr/cobblestone_roughness.png");
@@ -153,7 +158,7 @@ void Application::Run(void)
 		lightShader->SetUniform("View", view);
 		lightShader->SetUniform("Model", lightTransform.GetWorldMatrix());
 		glDrawArrays(GL_TRIANGLES, 0, (int)icosphereMesh->GetIndexCount());
-		
+
 		cobblestoneMat.Bind();
 		cubeMesh->Bind();
 		modelShader->SetUniform("Projection", projection);
@@ -181,6 +186,51 @@ void Application::Run(void)
 void Application::Shutdown(void)
 {
 	m_resourceManager.Clear();
+
+	glfwTerminate();
+}
+*/
+
+Application::Application()
+{
+	m_previousTime = 0.0f;
+}
+
+Application::~Application()
+{
+}
+
+void Application::InternalInitialize(void)
+{
+	Initialize();
+
+	m_window = std::make_unique<Window>(800, 600, "Hello Window");
+}
+
+void Application::InternalRun(void)
+{
+	float deltaTime = 0.0f;
+	float lastFrame = 0.0f;
+
+	while (m_window->ShouldClose() == false)
+	{
+		float currentFrame = (float)glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+		Input::PollInputEvents();
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+		Update(deltaTime);
+
+		glfwSwapBuffers((GLFWwindow*)m_window->GetHandle());
+	}
+}
+
+void Application::InternalShutdown(void)
+{
+	Shutdown();
 
 	glfwTerminate();
 }

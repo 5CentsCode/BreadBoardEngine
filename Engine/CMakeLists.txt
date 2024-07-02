@@ -11,7 +11,7 @@ set(componentFiles
  "Components/Sprite.h")
 
 set(systemFiles
-    "Systems/EnttSystem.h" 
+    "Systems/EnttSystem.h"
     "Systems/RenderSystem.h" "Systems/RenderSystem.cpp"
   )
 
@@ -46,14 +46,15 @@ foreach( sourceFile IN ITEMS ${BreadBoardSource} )
     source_group( "${relativeSourceFilePath}" FILES "${sourceFile}" )
 endforeach()
 
-add_executable(${AppName} WIN32
-    ${componentFiles}
-    ${systemFiles}
-    ${sourceFiles})
+# add_executable(${AppName} WIN32
+#     ${componentFiles}
+#     ${systemFiles}
+#     ${sourceFiles})
+add_library(${AppName} STATIC ${BreadBoardSource})
 #add_library(Engine STATIC ${SOURCE_FILES})
 
 target_compile_definitions(${AppName} PRIVATE PROJECT_ASSET_PATH="${CMAKE_SOURCE_DIR}/Assets/")
-target_include_directories(${AppName} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${AppName} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(${AppName} PRIVATE freetype glad glfw stb tinyobjloader)
 target_link_libraries(${AppName} PUBLIC EnTT::EnTT glm::glm ImGui)

@@ -5,6 +5,7 @@ class Window
 {
 public:
 
+	Window() : Window(800, 600, "Window") {}
 	Window(int32 width, int32 height, const char* title);
 	~Window();
 

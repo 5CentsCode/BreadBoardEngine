@@ -37,7 +37,7 @@ add_subdirectory(ThirdParty/glad)
 set_target_properties(glad PROPERTIES FOLDER ThirdParty/glad)
 
 add_subdirectory(ThirdParty/glfw)
-include_directories(ThirdParty/glfw/include)
+# include_directories(ThirdParty/glfw/include)
 set_target_properties(glfw PROPERTIES FOLDER ThirdParty/GLFW3)
 set_target_properties(update_mappings PROPERTIES FOLDER ThirdParty/GLFW3)
 
@@ -55,6 +55,7 @@ else()
 endif()
 
 add_subdirectory(Engine)
+add_subdirectory(Projects)
 
 if(MSVC)
     if(${CMAKE_VERSION} VERSION_LESS "3.6.0")
