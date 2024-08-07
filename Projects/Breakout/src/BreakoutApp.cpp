@@ -49,7 +49,7 @@ void BreakoutApp::Initialize(void)
 
 	// Create Systems
 	m_renderSystem = std::make_unique<EnttSystem::RenderSystem>(m_window);
-	m_paddleSystem = std::make_unique<EnttSystem::PaddleSystem>();
+	m_paddleSystem = std::make_unique<EnttSystem::PaddleSystem>(m_window);
 }
 
 void BreakoutApp::Update(float deltaTime)
