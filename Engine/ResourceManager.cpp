@@ -12,6 +12,8 @@
 #include "Texture.h"
 #include "Vertex.h"
 
+std::map<Guid, std::shared_ptr<Resource>> ResourceManager::m_resources;
+
 ResourceManager::ResourceManager()
 {
 }
@@ -23,7 +25,11 @@ ResourceManager::~ResourceManager()
 std::shared_ptr<Shader> ResourceManager::LoadShader(std::string name, std::string vertex, std::string fragmentFile)
 {
 	Guid guid = GetGuid(name);
-	assert(m_resources.find(guid) == m_resources.end());
+	auto existingResource = m_resources.find(guid);
+	if (existingResource != m_resources.end())
+	{
+		return std::static_pointer_cast<Shader>(existingResource->second);
+	}
 
 	std::vector<char> vertexSource = ReadFile(vertex);
 	std::vector<char> fragmentSource = ReadFile(fragmentFile);
@@ -37,7 +43,11 @@ std::shared_ptr<Shader> ResourceManager::LoadShader(std::string name, std::strin
 std::shared_ptr<Mesh> ResourceManager::LoadMesh(std::string filepath)
 {
 	Guid guid = GetGuid(filepath);
-	assert(m_resources.find(guid) == m_resources.end());
+	auto existingResource = m_resources.find(guid);
+	if (existingResource != m_resources.end())
+	{
+		return std::static_pointer_cast<Mesh>(existingResource->second);
+	}
 
 	tinyobj::ObjReaderConfig reader_config;
 	tinyobj::ObjReader reader;
@@ -125,7 +135,11 @@ std::shared_ptr<Mesh> ResourceManager::LoadMesh(std::string filepath)
 std::shared_ptr<Texture> ResourceManager::LoadTexture(std::string filepath)
 {
 	Guid guid = GetGuid(filepath);
-	assert(m_resources.find(guid) == m_resources.end());
+	auto existingResource = m_resources.find(guid);
+	if (existingResource != m_resources.end())
+	{
+		return std::static_pointer_cast<Texture>(existingResource->second);
+	}
 
 	int32 width;
 	int32 height;
@@ -151,7 +165,11 @@ std::shared_ptr<Texture> ResourceManager::LoadTexture(std::string filepath)
 std::shared_ptr<Texture> ResourceManager::CreateColorTexture(glm::u8vec4 color)
 {
 	Guid guid = (color.r << 24) + (color.g << 16) + (color.b << 8) + color.a;
-	assert(m_resources.find(guid) == m_resources.end());
+	auto existingResource = m_resources.find(guid);
+	if (existingResource != m_resources.end())
+	{
+		return std::static_pointer_cast<Texture>(existingResource->second);
+	}
 
 	int32 width = 1;
 	int32 height = 1;

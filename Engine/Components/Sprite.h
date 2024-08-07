@@ -9,6 +9,6 @@ namespace Component
 	struct Sprite
 	{
 		std::shared_ptr<Texture> Texture;
-		std::shared_ptr<Material> Material;
+		glm::vec3 ColorTint = glm::vec3(1.0f);
 	};
 }

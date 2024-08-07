@@ -6,6 +6,7 @@
 Material::Material(Guid guid, std::string name)
 	: Resource(guid, name)
 {
+	m_colorTint = glm::vec3(1.0f);
 }
 
 Material::~Material()
@@ -15,6 +16,11 @@ Material::~Material()
 void Material::SetShader(std::shared_ptr<Shader> shader)
 {
 	m_shader = shader;
+}
+
+void Material::SetColorTint(glm::vec3 colorTint)
+{
+	this->m_colorTint = colorTint;
 }
 
 void Material::SetAlbedoTexture(std::shared_ptr<Texture> albedoTexture)

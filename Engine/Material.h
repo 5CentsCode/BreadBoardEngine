@@ -14,6 +14,7 @@ public:
 public:
 
 	void SetShader(std::shared_ptr<Shader> shader);
+	void SetColorTint(glm::vec3 colorTint);
 	void SetAlbedoTexture(std::shared_ptr<Texture> albedoTexture);
 	void SetNormalTexture(std::shared_ptr<Texture> normalTexture);
 	void SetRoughnessTexture(std::shared_ptr<Texture> roughnessTexture);
@@ -21,10 +22,11 @@ public:
 
 	std::shared_ptr<Shader> Bind();
 
-private:
+public:
 
 	std::shared_ptr<Shader> m_shader;
 
+	glm::vec3 m_colorTint;
 	std::shared_ptr<Texture> m_albedoTexture;
 	std::shared_ptr<Texture> m_normalTexture;
 	std::shared_ptr<Texture> m_roughnessTexture;

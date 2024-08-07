@@ -8,14 +8,13 @@ namespace EnttSystem
 	class RenderSystem : public EnttSystem
 	{
 	public:
-		RenderSystem(Window* window, Mesh* quadMesh);
+		RenderSystem(std::shared_ptr<Window> window);
 		~RenderSystem();
 
 		void Update(entt::registry& registry, float deltaTime) override;
 
 	private:
 
-		Window* m_window;
-		Mesh* m_quadMesh;
+		std::shared_ptr<Window> m_window;
 	};
 }

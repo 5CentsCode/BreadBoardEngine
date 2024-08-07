@@ -8,7 +8,8 @@ set(componentFiles
     "Components/Light.h"
     "Components/MeshRenderer.h"
     "Components/RectTransform.h" "Components/RectTransform.cpp"
- "Components/Sprite.h")
+    "Components/Sprite.h"
+)
 
 set(systemFiles
     "Systems/EnttSystem.h"

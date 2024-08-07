@@ -9,10 +9,9 @@
 #include "ResourceManager.h"
 #include "Shader.h"
 
-EnttSystem::RenderSystem::RenderSystem(Window* window, Mesh* quadMesh)
+EnttSystem::RenderSystem::RenderSystem(std::shared_ptr<Window> window)
 {
 	m_window = window;
-	m_quadMesh = quadMesh;
 }
 
 EnttSystem::RenderSystem::~RenderSystem()
@@ -21,6 +20,7 @@ EnttSystem::RenderSystem::~RenderSystem()
 
 void EnttSystem::RenderSystem::Update(entt::registry& registry, float UNUSED_PARAM(deltaTime))
 {
+	/*
 	entt::entity cameraEntity = registry.view<Component::Transform, Component::Camera>().front();
 	Component::Transform& cameraTransform = registry.get<Component::Transform>(cameraEntity);
 	Component::Camera& cameraComponent = registry.get<Component::Camera>(cameraEntity);
@@ -41,28 +41,29 @@ void EnttSystem::RenderSystem::Update(entt::registry& registry, float UNUSED_PAR
 		shader->SetUniform("Model", transform.GetWorldMatrix());
 
 		mesh->Bind();
-		glDrawArrays(GL_TRIANGLES, 0, (int)mesh->GetIndexCount());
+		glDrawArrays(GL_TRIANGLES, 0, mesh->GetIndexCount());
 	});
+	*/
 
 	float halfWidth = m_window->GetAspectRatio() * m_window->GetHeight() * 0.5f;
 	float halfHeight = m_window->GetHeight() * 0.5f;
 	glm::mat4 uiCanvas = glm::ortho(-halfWidth, halfWidth, -halfHeight, halfHeight, -10.0f, 10.0f);
+	std::shared_ptr<Mesh> quadMesh = ResourceManager::LoadMesh(std::string(PROJECT_ASSET_PATH) + "Models/quad.obj");
+	std::shared_ptr<Shader> spriteShader = ResourceManager::LoadShader("SpriteShader", std::string(PROJECT_ASSET_PATH) + "Sprite.vert", std::string(PROJECT_ASSET_PATH) + "Sprite.frag");
+	spriteShader->Bind();
 
+	// TODO: Find a better place to store the QuadMesh than using a MeshRenderer for rendering Sprites
 	registry.view<Component::RectTransform, Component::Sprite>()
 		.each([&](const entt::entity UNUSED_PARAM(entity), Component::RectTransform& transform, Component::Sprite& sprite)
 	{
-		std::shared_ptr<Material> material = sprite.Material;
-		std::shared_ptr<Texture> texture = sprite.Texture;
-
-		std::shared_ptr<Shader> shader = material->Bind();
-
 		glActiveTexture(GL_TEXTURE4);
-		glBindTexture(GL_TEXTURE_2D, texture->GetId());
-		shader->SetUniform("Sprite", 4);
-		shader->SetUniform("Projection", uiCanvas);
-		shader->SetUniform("Model", transform.GetWorldMatrix());
+		glBindTexture(GL_TEXTURE_2D, sprite.Texture->GetId());
+		spriteShader->SetUniform("Sprite", 4);
+		spriteShader->SetUniform("Projection", uiCanvas);
+		spriteShader->SetUniform("Model", transform.GetWorldMatrix());
+		spriteShader->SetUniform("ColorTint", sprite.ColorTint);
 
-		m_quadMesh->Bind();
-		glDrawArrays(GL_TRIANGLES, 0, (int)m_quadMesh->GetIndexCount());
+		quadMesh->Bind();
+		glDrawArrays(GL_TRIANGLES, 0, quadMesh->GetIndexCount());
 	});
 }
