@@ -3,6 +3,7 @@
 #include <Systems/RenderSystem.h>
 #include "GameLevel.h"
 #include "PaddleSystem.h"
+#include "BallSystem.h"
 
 class BreakoutApp : public Application
 {
@@ -23,6 +24,7 @@ private:
 
 	std::unique_ptr<EnttSystem::RenderSystem> m_renderSystem;
 	std::unique_ptr<EnttSystem::PaddleSystem> m_paddleSystem;
+	std::unique_ptr<EnttSystem::BallSystem> m_ballSystem;
 
 	std::unique_ptr<GameLevel> m_gameLevel;
 };

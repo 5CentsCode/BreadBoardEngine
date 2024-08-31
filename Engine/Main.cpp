@@ -8,7 +8,7 @@
 int main(void)
 {
 #if _DEBUG
-	ConsoleWindow::CreateNewConsole();
+	// ConsoleWindow::CreateNewConsole();
 
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
@@ -23,7 +23,7 @@ int main(void)
 	app.reset();
 
 #if _DEBUG
-	ConsoleWindow::ReleaseConsole();
+	// ConsoleWindow::ReleaseConsole();
 #endif
 
 	return 0;

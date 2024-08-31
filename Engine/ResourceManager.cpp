@@ -146,7 +146,7 @@ std::shared_ptr<Texture> ResourceManager::LoadTexture(std::string filepath)
 	int32 channels;
 	uint8* data = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
 	std::vector<uint8> pixelData(data, data + (width * height * channels));
-	
+
 	if (data != nullptr)
 	{
 	}
@@ -164,7 +164,7 @@ std::shared_ptr<Texture> ResourceManager::LoadTexture(std::string filepath)
 
 std::shared_ptr<Texture> ResourceManager::CreateColorTexture(glm::u8vec4 color)
 {
-	Guid guid = (color.r << 24) + (color.g << 16) + (color.b << 8) + color.a;
+	Guid guid = ((uint64)color.r << 24) + ((uint64)color.g << 16) + ((uint64)color.b << 8) + color.a;
 	auto existingResource = m_resources.find(guid);
 	if (existingResource != m_resources.end())
 	{
@@ -220,9 +220,9 @@ Guid ResourceManager::GetGuid(std::string name)
 {
 	std::string lowercaseString = name;
 	std::transform(name.begin(), name.end(), lowercaseString.begin(), [](char ch)
-	{
-		return (char)std::tolower((int32)ch);
-	});
+		{
+			return (char)std::tolower((int32)ch);
+		});
 	Guid guid = std::hash<std::string>{}(lowercaseString);
 	return guid;
 }

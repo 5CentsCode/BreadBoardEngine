@@ -18,7 +18,7 @@ EnttSystem::RenderSystem::~RenderSystem()
 {
 }
 
-void EnttSystem::RenderSystem::Update(entt::registry& registry, float UNUSED_PARAM(deltaTime))
+void EnttSystem::RenderSystem::Update(entt::registry& UNUSED_PARAM(registry), float UNUSED_PARAM(deltaTime))
 {
 	/*
 	entt::entity cameraEntity = registry.view<Component::Transform, Component::Camera>().front();
@@ -45,6 +45,7 @@ void EnttSystem::RenderSystem::Update(entt::registry& registry, float UNUSED_PAR
 	});
 	*/
 
+	/*
 	float halfWidth = m_window->GetAspectRatio() * m_window->GetHeight() * 0.5f;
 	float halfHeight = m_window->GetHeight() * 0.5f;
 	glm::mat4 uiCanvas = glm::ortho(-halfWidth, halfWidth, -halfHeight, halfHeight, -10.0f, 10.0f);
@@ -66,4 +67,5 @@ void EnttSystem::RenderSystem::Update(entt::registry& registry, float UNUSED_PAR
 		quadMesh->Bind();
 		glDrawArrays(GL_TRIANGLES, 0, quadMesh->GetIndexCount());
 	});
+	*/
 }

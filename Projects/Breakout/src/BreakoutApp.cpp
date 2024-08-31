@@ -3,6 +3,7 @@
 #include <Components/RectTransform.h>
 #include <Components/Sprite.h>
 #include "Paddle.h"
+#include "Ball.h"
 
 BreakoutApp::BreakoutApp()
 	: Application()
@@ -41,21 +42,27 @@ void BreakoutApp::Initialize(void)
 	std::shared_ptr<Texture> paddleTexture = ResourceManager::LoadTexture(std::string(PROJECT_ASSET_PATH) + "paddle.png");
 	
 	// Create entities
+	m_gameLevel = std::make_unique<GameLevel>();
+	m_gameLevel->Load((std::string(PROJECT_ASSET_PATH) + "levels/level1.txt").c_str(), m_registry, m_window->GetSize());
+
 	entt::entity paddleEntity = CreateSpriteEntity(glm::vec3(0.0f, (m_window->GetHeight() * -0.5f) + 20.0f, 1.0f), glm::vec3(100.0f, 20.0f, 1.0f), paddleTexture, glm::vec3(1.0f, 1.0f, 1.0f));
 	m_registry.emplace<Component::Paddle>(paddleEntity);
 
-	m_gameLevel = std::make_unique<GameLevel>();
-	m_gameLevel->Load((std::string(PROJECT_ASSET_PATH) + "levels/level1.txt").c_str(), m_registry, m_window->GetSize());
+	entt::entity ballEntity = CreateSpriteEntity(glm::vec3(0.0f, (m_window->GetHeight() * -0.5f) + 20.0f, 2.0f), glm::vec3(30.0f), ballTexture, glm::vec3(1.0f, 1.0f, 1.0f));
+	Component::Ball& ball = m_registry.emplace<Component::Ball>(ballEntity);
+	ball.Velocity = glm::vec2(0.6f, 0.1f) * 500.0f;
 
 	// Create Systems
 	m_renderSystem = std::make_unique<EnttSystem::RenderSystem>(m_window);
 	m_paddleSystem = std::make_unique<EnttSystem::PaddleSystem>(m_window);
+	m_ballSystem = std::make_unique<EnttSystem::BallSystem>(m_window);
 }
 
 void BreakoutApp::Update(float deltaTime)
 {
 	m_renderSystem->Update(m_registry, deltaTime);
 	m_paddleSystem->Update(m_registry, deltaTime);
+	m_ballSystem->Update(m_registry, deltaTime);
 }
 
 void BreakoutApp::Shutdown(void)

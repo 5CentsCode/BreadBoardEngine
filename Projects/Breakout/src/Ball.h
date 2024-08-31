@@ -1,6 +1,10 @@
 #pragma once
 #include "Typedefs.h"
 
-struct Ball
+namespace Component
 {
-};
+	struct Ball
+	{
+		glm::vec2 Velocity;
+	};
+}

@@ -22,7 +22,7 @@ public:
 	static std::shared_ptr<Texture> CreateColorTexture(glm::u8vec4 color);
 	static std::shared_ptr<Texture> CreateColorTexture(glm::vec4 color);
 
-	void Clear();
+	static void Clear();
 
 private:
 	static std::vector<char> ReadFile(std::string& filePath);

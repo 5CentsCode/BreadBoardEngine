@@ -83,10 +83,12 @@ void Camera::SetFieldOfView(float fieldOfView)
 
 void Camera::SetAspectRatio(float aspectRatio)
 {
-	assert(aspectRatio != 0.0f);
-
-	m_aspectRatio = aspectRatio;
-	m_dirty = true;
+	if (!std::isnan(m_aspectRatio) &&
+		!std::isinf(m_aspectRatio))
+	{
+		m_aspectRatio = aspectRatio;
+		m_dirty = true;
+	}
 }
 
 void Camera::SetProjectionMode(ProjectionMode projectionMode)
@@ -130,4 +132,5 @@ void Camera::CalculateProjectionMatrix()
 	}
 
 	m_dirty = false;
+	m_projectionMatrix = glm::scale(m_projectionMatrix, glm::vec3(-1.0f, 1.0f, 1.0f));
 }

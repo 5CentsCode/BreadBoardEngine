@@ -31,7 +31,6 @@ namespace Component
 		void SetRight(glm::vec3 right);
 
 		glm::mat4 GetWorldMatrix();
-		glm::mat4 GetLookAtMatrix();
 
 	protected:
 
@@ -49,6 +48,5 @@ namespace Component
 		glm::vec3 m_scale;
 
 		glm::mat4 m_worldMatrix;
-		glm::mat4 m_lookAtMatrix;
 	};
 }

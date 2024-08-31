@@ -1,7 +1,7 @@
 #include "PaddleSystem.h"
-#include "Paddle.h"
 #include <Input.h>
 #include <Components/RectTransform.h>
+#include "Paddle.h"
 
 using namespace EnttSystem;
 

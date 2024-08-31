@@ -11,7 +11,6 @@ Transform::Transform()
 	m_rotation = glm::identity<glm::quat>();
 	m_scale = glm::vec3(1.0f);
 	m_worldMatrix = glm::identity<glm::mat4>();
-	m_lookAtMatrix = glm::identity<glm::mat4>();
 }
 
 glm::vec3 Transform::GetPosition() const
@@ -116,24 +115,13 @@ glm::mat4 Transform::GetWorldMatrix()
 	return m_worldMatrix;
 }
 
-glm::mat4 Component::Transform::GetLookAtMatrix()
-{
-	if (m_dirty)
-	{
-		CalculateMatrices();
-	}
-
-	return m_lookAtMatrix;
-}
-
 void Transform::CalculateMatrices()
 {
 	glm::mat4 worldMatrix = glm::identity<glm::mat4>();
 	worldMatrix = glm::translate(worldMatrix, m_position);
 	worldMatrix *= glm::mat4_cast(m_rotation);
 	worldMatrix = glm::scale(worldMatrix, m_scale);
-
-	m_lookAtMatrix = glm::lookAt(m_position, m_position + GetForward(), GetUp());
+	// worldMatrix = glm::scale(worldMatrix, VEC3_BACKWARD);
 
 	m_worldMatrix = worldMatrix;
 	m_dirty = false;

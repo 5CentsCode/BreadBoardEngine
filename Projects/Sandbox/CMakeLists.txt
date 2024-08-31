@@ -1,15 +1,9 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(AppName "Breakout")
+set(AppName "Sandbox")
 
 set(sourceFiles
-    "src/BreakoutApp.h" "src/BreakoutApp.cpp"
-    "src/Brick.h"
-    "src/GameLevel.h"
-    "src/GameState.h" "src/GameLevel.cpp"
-    "src/Paddle.h"
-    "src/Ball.h"
-    "src/PaddleSystem.h" "src/PaddleSystem.cpp" "src/BallSystem.h" "src/BallSystem.cpp")
+    "src/SandboxApp.h" "src/SandboxApp.cpp")
 
 foreach( sourceFile IN ITEMS ${sourceFiles} )
 	get_filename_component( sourceFilePath "${sourceFile}" PATH )

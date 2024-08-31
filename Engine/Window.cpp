@@ -1,7 +1,13 @@
+#include "Input.h"
 #include "Window.h"
+#include <CommCtrl.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Input.h"
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include <GLFW/glfw3native.h>
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 Window::Window(int32 width, int32 height, const char* title)
 {
@@ -23,7 +29,6 @@ Window::Window(int32 width, int32 height, const char* title)
 	glfwSetWindowPosCallback(m_window, PositionCallback);
 	glfwSetWindowSizeCallback(m_window, SizeCallback);
 	glfwSetWindowMaximizeCallback(m_window, MaximizeCallback);
-
 	glfwSetWindowIconifyCallback(m_window, MinimizeCallback);
 	glfwSetWindowFocusCallback(m_window, FocusCallback);
 	glfwSetDropCallback(m_window, DropCallback);
@@ -37,6 +42,7 @@ Window::Window(int32 width, int32 height, const char* title)
 	glfwSetCursorEnterCallback(m_window, Input::CursorEnterCallback);
 
 	glfwMakeContextCurrent(m_window);
+	glfwSwapInterval(0);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -62,17 +68,20 @@ Window::~Window()
 
 bool Window::ShouldClose() const
 {
-	return glfwWindowShouldClose(m_window);
+	bool shouldClose = glfwWindowShouldClose(m_window);
+	return shouldClose;
 }
 
 bool Window::IsMinimized() const
 {
-	return !IsMaximized();
+	bool minimized = !IsMaximized();
+	return minimized;
 }
 
 bool Window::IsMaximized() const
 {
-	return glfwGetWindowAttrib(m_window, GLFW_MAXIMIZED) > 0;
+	bool maximized = glfwGetWindowAttrib(m_window, GLFW_MAXIMIZED) > 0;
+	return maximized;
 }
 
 void Window::SetPosition(int32 x, int32 y)
@@ -173,7 +182,17 @@ glm::ivec2 Window::GetSize() const
 
 float Window::GetAspectRatio() const
 {
-	return (float)GetWidth() / (float)GetHeight();
+	int width = GetWidth();
+	int height = GetHeight();
+	float ratio = (float)width / (float)height;
+
+	if (std::isnan(ratio) ||
+		std::isinf(ratio))
+	{
+		ratio = 0.0f;
+	}
+
+	return ratio;
 }
 
 glm::ivec2 Window::GetPosition() const
@@ -190,24 +209,32 @@ void* Window::GetHandle() const
 
 void Window::PositionCallback(GLFWwindow* glfwWindow, int32 x, int32 y)
 {
+	REFERENCE(x);
+	REFERENCE(y);
+
 	Window* window = (Window*)glfwGetWindowUserPointer(glfwWindow);
+	glm::vec2 windowSize = window->GetSize();
 	if (window != NULL)
 	{
 		if (window->IsFullScreen() == false)
 		{
-			window->SetPosition(x, y);
+			// window->SetPosition(x, y);
 		}
 	}
 }
 
 void Window::SizeCallback(GLFWwindow* glfwWindow, int32 width, int32 height)
 {
+	REFERENCE(width);
+	REFERENCE(height);
+
 	Window* window = (Window*)glfwGetWindowUserPointer(glfwWindow);
 	if (window != NULL)
 	{
 		if (window->IsFullScreen() == false)
 		{
-			window->SetSize(width, height);
+			glViewport(0, 0, width, height);
+			// window->SetSize(width, height);
 		}
 	}
 }
