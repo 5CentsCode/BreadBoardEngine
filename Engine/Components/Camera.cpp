@@ -132,5 +132,5 @@ void Camera::CalculateProjectionMatrix()
 	}
 
 	m_dirty = false;
-	m_projectionMatrix = glm::scale(m_projectionMatrix, glm::vec3(-1.0f, 1.0f, 1.0f));
+	// m_projectionMatrix = glm::scale(m_projectionMatrix, glm::vec3(-1.0f, 1.0f, 1.0f));
 }

@@ -3,6 +3,7 @@
 #include <entt/entt.hpp>
 #include "ResourceManager.h" // TEMP
 #include "Window.h"
+#include "Editor/EditorCamera.h"
 
 class Application
 {
@@ -35,13 +36,12 @@ protected:
 
 	entt::registry m_registry;
 
-	float m_minFrameTime = std::numeric_limits<float>::max();
-	float m_maxFrameTime = std::numeric_limits<float>::min();
-	std::array<float, 1000> m_frameTimeGraph;
+	float m_currentFrameTime;
+	float m_previousFrameTime;
+	float m_deltaTime;
+	uint64 m_currentFrame;
 
-private:
-
-	float m_previousTime;
+	EditorCamera m_editorCamera;
 };
 
 std::unique_ptr<Application> CreateApplication();

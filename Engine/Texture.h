@@ -13,6 +13,10 @@ public:
 
 	int32 GetId() const;
 
+	int32 GetWidth() const;
+	int32 GetHeight() const;
+	glm::ivec2 GetSize() const;
+
 private:
 	bool m_dirty;
 

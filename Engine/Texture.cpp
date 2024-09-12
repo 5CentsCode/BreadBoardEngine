@@ -68,3 +68,18 @@ int32 Texture::GetId() const
 {
 	return m_id;
 }
+
+int32 Texture::GetWidth() const
+{
+	return m_width;
+}
+
+int32 Texture::GetHeight() const
+{
+	return m_height;
+}
+
+glm::ivec2 Texture::GetSize() const
+{
+	return glm::ivec2(m_width, m_height);
+}

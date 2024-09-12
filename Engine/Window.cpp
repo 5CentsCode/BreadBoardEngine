@@ -55,6 +55,9 @@ Window::Window(int32 width, int32 height, const char* title)
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
+	glEnable(GL_CULL_FACE);
+
+	glViewport(0, 0, width, height);
 }
 
 Window::~Window()
@@ -175,7 +178,7 @@ int32 Window::GetHeight() const
 
 glm::ivec2 Window::GetSize() const
 {
-	glm::ivec2 size;
+	glm::ivec2 size = glm::ivec2(0);
 	glfwGetWindowSize(m_window, &size.x, &size.y);
 	return size;
 }
@@ -197,7 +200,7 @@ float Window::GetAspectRatio() const
 
 glm::ivec2 Window::GetPosition() const
 {
-	glm::ivec2 size;
+	glm::ivec2 size = glm::ivec2(0);
 	glfwGetWindowPos(m_window, &size.x, &size.y);
 	return size;
 }
@@ -225,9 +228,6 @@ void Window::PositionCallback(GLFWwindow* glfwWindow, int32 x, int32 y)
 
 void Window::SizeCallback(GLFWwindow* glfwWindow, int32 width, int32 height)
 {
-	REFERENCE(width);
-	REFERENCE(height);
-
 	Window* window = (Window*)glfwGetWindowUserPointer(glfwWindow);
 	if (window != NULL)
 	{

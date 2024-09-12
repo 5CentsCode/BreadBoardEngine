@@ -9,7 +9,10 @@
 
 Application::Application()
 {
-	m_previousTime = 0.0f;
+	m_currentFrameTime = 0.0f;
+	m_previousFrameTime = 0.0f;
+	m_deltaTime = 0.0f;
+	m_currentFrame = 0;
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -46,14 +49,16 @@ void Application::InternalInitialize(void)
 
 void Application::InternalRun(void)
 {
-	float deltaTime = 0.0f;
-	float lastFrame = 0.0f;
+	// Set initial frame time information to capture the first frame of the application
+	m_previousFrameTime = m_currentFrameTime;
+	m_currentFrameTime = (float)glfwGetTime();
+	m_deltaTime = m_currentFrameTime - m_previousFrameTime;
 
 	while (m_window->ShouldClose() == false)
 	{
-		float currentFrame = (float)glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
+		// Increment the frame number at the beginning of the frame
+		m_currentFrame++;
+
 		Input::PollInputEvents();
 
 		bool escapePressed = Input::IsKeyPressed(KeyCode::Escape);
@@ -69,12 +74,17 @@ void Application::InternalRun(void)
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		Update(deltaTime);
+		Update(m_deltaTime);
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		glfwSwapBuffers((GLFWwindow*)m_window->GetHandle());
+
+		// Update frame time information
+		m_previousFrameTime = m_currentFrameTime;
+		m_currentFrameTime = (float)glfwGetTime();
+		m_deltaTime = m_currentFrameTime - m_previousFrameTime;
 	}
 }
 

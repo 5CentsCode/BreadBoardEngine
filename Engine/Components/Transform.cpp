@@ -121,7 +121,6 @@ void Transform::CalculateMatrices()
 	worldMatrix = glm::translate(worldMatrix, m_position);
 	worldMatrix *= glm::mat4_cast(m_rotation);
 	worldMatrix = glm::scale(worldMatrix, m_scale);
-	// worldMatrix = glm::scale(worldMatrix, VEC3_BACKWARD);
 
 	m_worldMatrix = worldMatrix;
 	m_dirty = false;

@@ -20,6 +20,7 @@ ResourceManager::ResourceManager()
 
 ResourceManager::~ResourceManager()
 {
+	Clear();
 }
 
 std::shared_ptr<Shader> ResourceManager::LoadShader(std::string name, std::string vertex, std::string fragmentFile)
@@ -159,6 +160,8 @@ std::shared_ptr<Texture> ResourceManager::LoadTexture(std::string filepath)
 
 	std::shared_ptr<Texture> newTexture = std::make_shared<Texture>(guid, filepath, pixelData, width, height, channels);
 	newTexture->Upload();
+	m_resources.emplace(guid, newTexture);
+
 	return newTexture;
 }
 
@@ -184,6 +187,8 @@ std::shared_ptr<Texture> ResourceManager::CreateColorTexture(glm::u8vec4 color)
 
 	std::shared_ptr<Texture> newTexture = std::make_shared<Texture>(guid, "Color", pixelData, width, height, channels);
 	newTexture->Upload();
+	m_resources.emplace(guid, newTexture);
+
 	return newTexture;
 }
 

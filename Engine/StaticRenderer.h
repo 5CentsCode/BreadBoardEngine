@@ -7,7 +7,7 @@ class StaticRenderer
 {
 public:
 
-	static void SetCamera(std::shared_ptr<Component::Camera> camera, std::shared_ptr<Component::Transform> cameraTransform);
+	static void SetCamera(Component::Camera* camera, Component::Transform* cameraTransform);
 
 	static void RenderMesh(Component::Transform& transform, const Component::MeshRenderer& meshRenderer);
 
@@ -15,6 +15,6 @@ public:
 
 private:
 
-	static std::shared_ptr<Component::Camera> s_camera;
-	static std::shared_ptr<Component::Transform> s_cameraTransform;
+	static Component::Camera* s_camera;
+	static Component::Transform* s_cameraTransform;
 };

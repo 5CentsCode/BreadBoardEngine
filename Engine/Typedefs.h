@@ -34,5 +34,5 @@ using Guid = uint64;
 #define VEC3_UP glm::vec3(0.0f, 1.0f, 0.0f)
 #define VEC3_DOWN (-VEC3_UP)
 
-#define VEC3_FORWARD glm::vec3(0.0f, 0.0f, 1.0f)
+#define VEC3_FORWARD glm::vec3(0.0f, 0.0f, -1.0f)
 #define VEC3_BACKWARD (-VEC3_FORWARD)

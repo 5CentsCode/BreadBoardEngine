@@ -5,10 +5,10 @@
 #include "Mesh.h"
 #include "Shader.h"
 
-std::shared_ptr<Component::Camera> StaticRenderer::s_camera;
-std::shared_ptr<Component::Transform> StaticRenderer::s_cameraTransform;
+Component::Camera* StaticRenderer::s_camera;
+Component::Transform* StaticRenderer::s_cameraTransform;
 
-void StaticRenderer::SetCamera(std::shared_ptr<Component::Camera> camera, std::shared_ptr<Component::Transform> cameraTransform)
+void StaticRenderer::SetCamera(Component::Camera* camera, Component::Transform* cameraTransform)
 {
 	s_camera = camera;
 	s_cameraTransform = cameraTransform;

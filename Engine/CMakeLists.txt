@@ -35,10 +35,15 @@ set(sourceFiles
     "Window.h" "Window.cpp"
 )
 
+set(EditorFiles
+    "Editor/EditorCamera.h" "Editor/EditorCamera.cpp"
+)
+
 set(BreadBoardSource
     ${componentFiles}
     ${systemFiles}
     ${sourceFiles}
+    ${EditorFiles}
 )
 
 foreach( sourceFile IN ITEMS ${BreadBoardSource} )
