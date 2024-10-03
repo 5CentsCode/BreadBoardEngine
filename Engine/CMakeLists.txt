@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(AppName "BBEngine")
+set(AppName "Engine")
 
 set(componentFiles
     "Components/Camera.h" "Components/Camera.cpp"

@@ -3,8 +3,10 @@ function(AddProject projectName)
     set_target_properties(${projectName} PROPERTIES FOLDER Projects)
 endfunction()
 
-AddProject(Breakout)
-AddProject(Sandbox)
+AddProject(BulletMMO)
+
+# AddProject(Breakout)
+# AddProject(Sandbox)
 
 # add_subdirectory(Breakout)
 # set_target_properties(Breakout PROPERTIES FOLDER Projects)

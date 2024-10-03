@@ -4,7 +4,6 @@
 #include "ConsoleWindow.h"
 #endif
 
-
 int main(void)
 {
 #if _DEBUG
@@ -16,9 +15,9 @@ int main(void)
 
 	std::unique_ptr<Application> app = CreateApplication();
 
-	app->InternalInitialize();
-	app->InternalRun();
-	app->InternalShutdown();
+	app->Initialize();
+	app->Run();
+	app->Shutdown();
 
 	app.reset();
 

@@ -9,6 +9,7 @@
 #include "SandboxApp.h"
 
 #include <StaticRenderer.h>
+#include <Components/Light.h>
 
 SandboxApp::SandboxApp()
 	: Application()
@@ -40,16 +41,71 @@ void SandboxApp::Initialize(void)
 	{
 		entt::entity meshEntity = m_registry.create();
 		Component::Transform& transform = m_registry.emplace<Component::Transform>(meshEntity);
-		transform.SetPosition(glm::vec3(((float)i - (meshes.size() * 0.5f)) * 3.0f, 0.0f, 0.0f));
 		Component::MeshRenderer& meshRenderer = m_registry.emplace<Component::MeshRenderer>(meshEntity);
+
+		glm::vec3 position = glm::vec3(-9.0f + (3.0f * i), 0.0f, 0.0f);
+
+		transform.SetPosition(position);
 		meshRenderer.Mesh = meshes[i];
 		meshRenderer.Material = whiteMaterial;
 	}
 
+	{
+		entt::entity lightEntity = m_registry.create();
+		Component::Light& light = m_registry.emplace<Component::Light>(lightEntity);
+		Component::Transform& transform = m_registry.emplace<Component::Transform>(lightEntity);
+		light.Color = glm::vec3(1.0f, 0.0f, 0.0f);
+		light.Type = LightType::Directional;
+		light.Intensity = 1.0f;
+		transform.SetForward(glm::vec3(1.0f, 0.0f, 0.0f));
+	}
+
+	{
+		entt::entity lightEntity = m_registry.create();
+		Component::Light& light = m_registry.emplace<Component::Light>(lightEntity);
+		Component::Transform& transform = m_registry.emplace<Component::Transform>(lightEntity);
+		light.Color = glm::vec3(0.0f, 1.0f, 0.0f);
+		light.Type = LightType::Directional;
+		light.Intensity = 1.0f;
+		transform.SetForward(glm::vec3(0.0f, -1.0f, 0.0f));
+	}
+
+	{
+		entt::entity lightEntity = m_registry.create();
+		Component::Light& light = m_registry.emplace<Component::Light>(lightEntity);
+		Component::Transform& transform = m_registry.emplace<Component::Transform>(lightEntity);
+		light.Color = glm::vec3(0.0f, 0.0f, 1.0f);
+		light.Type = LightType::Directional;
+		light.Intensity = 1.0f;
+		transform.SetForward(glm::vec3(-1.0f, 1.0f, -0.5f));
+	}
+
+	{
+		entt::entity lightEntity = m_registry.create();
+		Component::Light& light = m_registry.emplace<Component::Light>(lightEntity);
+		Component::Transform& transform = m_registry.emplace<Component::Transform>(lightEntity);
+		light.Color = glm::vec3(1.0f);
+		light.Type = LightType::Point;
+		light.Intensity = 1.0f;
+		light.Range = 10.0f;
+		transform.SetPosition(glm::vec3(-1.5f, 0.0f, 0.0f));
+	}
+
+	{
+		entt::entity lightEntity = m_registry.create();
+		Component::Light& light = m_registry.emplace<Component::Light>(lightEntity);
+		Component::Transform& transform = m_registry.emplace<Component::Transform>(lightEntity);
+		light.Color = glm::vec3(1.0f);
+		light.Type = LightType::Point;
+		light.Intensity = 0.5f;
+		light.Range = 10.0f;
+		transform.SetForward(glm::vec3(1.5f, 0.0f, 0.0f));
+	}
+
 	Component::Transform& cameraTransform = m_editorCamera.GetTransform();
-	cameraTransform.SetPosition(glm::vec3(0.0f, 0.0f, 10.0f));
+	cameraTransform.SetPosition(glm::vec3(0.0f, 0.0f, 15.0f));
 	Component::Camera& camera = m_editorCamera.GetCamera();
-	camera.SetAspectRatio(m_window->GetAspectRatio());
+	camera.SetFieldOfView(45.0f);
 
 	StaticRenderer::SetCamera(&camera, &cameraTransform);
 }
@@ -60,21 +116,28 @@ void SandboxApp::Update(float deltaTime)
 {
 	m_editorCamera.Update(deltaTime);
 	m_editorCamera.GetCamera().SetAspectRatio(m_window->GetAspectRatio());
+
+	float offset = glm::pi<float>() / 10.0f;
 	m_registry.view<Component::Transform, Component::MeshRenderer>()
 		.each([&](const entt::entity UNUSED_PARAM(entity), Component::Transform& transform, Component::MeshRenderer& meshRenderer)
 		{
 			StaticRenderer::RenderMesh(transform, meshRenderer);
+
+			glm::vec3 position = transform.GetPosition();
+			float y = glm::sin(((m_totalTime * 2.0f) + ((position.x / 3.0f) * offset))) * 2.0f;
+
+			if (position.x <= -8.9f)
+			{
+				float scale = (glm::sin(m_totalTime * 5.0f) * 0.5f) + 1.0f;
+				transform.SetScale(glm::vec3(scale));
+				transform.Rotate(glm::vec3(0.0f, 0.0f, m_deltaTime));
+			}
+
+			transform.SetPosition(glm::vec3(position.x, y, position.z));
+			transform.Rotate(glm::vec3(0.0f, -deltaTime, 0.0f));
 		});
 
-	StaticRenderer::RenderLine(glm::vec3(0.0f), glm::vec3(5.0f, 5.0f, 5.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-
-	std::shared_ptr<Texture> numbersTexture = ResourceManager::LoadTexture(std::string(PROJECT_ASSET_PATH) + "Sprites/Numbers.png");
-
-	ImGui::Begin("GPU Info");
-	ImGui::SetNextWindowSize(ImVec2(200, 200), ImGuiCond_FirstUseEver);
-
-	ImGui::Text("FPS: %f", 1000.0f / deltaTime);
-	ImGui::End();
+	// StaticRenderer::RenderLine(glm::vec3(0.0f), glm::vec3(5.0f, 5.0f, 5.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 }
 
 void SandboxApp::Shutdown(void)

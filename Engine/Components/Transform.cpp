@@ -57,6 +57,12 @@ void Transform::SetScale(glm::vec3 scale)
 	m_dirty = true;
 }
 
+void Component::Transform::Rotate(glm::vec3 eulerAngles)
+{
+	m_rotation *= glm::quat(eulerAngles);
+	m_dirty = true;
+}
+
 glm::vec3 Transform::GetForward() const
 {
 	glm::vec3 forward = glm::normalize(m_rotation * VEC3_FORWARD);

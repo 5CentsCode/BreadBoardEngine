@@ -13,6 +13,7 @@ Application::Application()
 	m_previousFrameTime = 0.0f;
 	m_deltaTime = 0.0f;
 	m_currentFrame = 0;
+	m_totalTime = 0.0f;
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -31,41 +32,23 @@ Application::~Application()
 	ImGui::DestroyContext();
 }
 
-void Application::RenderTriangles(int32 indexCount)
+void Application::Initialize(void)
 {
-	glDrawArrays(GL_TRIANGLES, 0, indexCount);
 }
 
-void Application::InternalInitialize(void)
-{
-	m_window = std::make_unique<Window>(800, 600, "Hello Window");
-
-	// Setup Platform/Renderer backends
-	ImGui_ImplGlfw_InitForOpenGL((GLFWwindow*)m_window->GetHandle(), true);
-	ImGui_ImplOpenGL3_Init();
-
-	Initialize();
-}
-
-void Application::InternalRun(void)
+void Application::Run(void)
 {
 	// Set initial frame time information to capture the first frame of the application
 	m_previousFrameTime = m_currentFrameTime;
 	m_currentFrameTime = (float)glfwGetTime();
 	m_deltaTime = m_currentFrameTime - m_previousFrameTime;
 
-	while (m_window->ShouldClose() == false)
+	while (ShouldClose() == false)
 	{
 		// Increment the frame number at the beginning of the frame
 		m_currentFrame++;
 
 		Input::PollInputEvents();
-
-		bool escapePressed = Input::IsKeyPressed(KeyCode::Escape);
-		if (escapePressed)
-		{
-			m_window->Close();
-		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -85,12 +68,20 @@ void Application::InternalRun(void)
 		m_previousFrameTime = m_currentFrameTime;
 		m_currentFrameTime = (float)glfwGetTime();
 		m_deltaTime = m_currentFrameTime - m_previousFrameTime;
+		m_totalTime += m_deltaTime;
 	}
 }
 
-void Application::InternalShutdown(void)
+void Application::Shutdown(void)
 {
-	Shutdown();
-
 	glfwTerminate();
+}
+
+void Application::InitWindow(int width, int height, const char* title)
+{
+	m_window = std::make_unique<Window>(width, height, title);
+
+	// Setup Platform/Renderer backends
+	ImGui_ImplGlfw_InitForOpenGL((GLFWwindow*)m_window->GetHandle(), true);
+	ImGui_ImplOpenGL3_Init();
 }

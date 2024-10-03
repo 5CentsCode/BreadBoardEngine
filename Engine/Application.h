@@ -18,15 +18,15 @@ public:
 	virtual void Initialize(void) = 0;
 	virtual void Update(float deltaTime) = 0;
 	virtual void Shutdown(void) = 0;
+	virtual bool ShouldClose(void) = 0;
 
-	// TEMP
-	void RenderTriangles(int32 indexCount);
+protected:
+
+	void InitWindow(int width, int height, const char* title);
 
 private:
 
-	void InternalInitialize(void);
-	void InternalRun(void);
-	void InternalShutdown(void);
+	void Run(void);
 
 protected:
 
@@ -39,6 +39,7 @@ protected:
 	float m_currentFrameTime;
 	float m_previousFrameTime;
 	float m_deltaTime;
+	float m_totalTime;
 	uint64 m_currentFrame;
 
 	EditorCamera m_editorCamera;

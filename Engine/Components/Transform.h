@@ -22,6 +22,8 @@ namespace Component
 		void SetEulerAngles(glm::vec3 eulerAngles);
 		void SetScale(glm::vec3 scale);
 
+		void Rotate(glm::vec3 eulerAngles);
+
 		glm::vec3 GetForward() const;
 		glm::vec3 GetUp() const;
 		glm::vec3 GetRight() const;
