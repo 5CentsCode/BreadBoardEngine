@@ -4,6 +4,7 @@ function(AddProject projectName)
 endfunction()
 
 AddProject(BulletMMO)
+AddProject(Tetris)
 
 # AddProject(Breakout)
 # AddProject(Sandbox)

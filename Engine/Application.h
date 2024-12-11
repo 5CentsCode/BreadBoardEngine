@@ -1,48 +1,47 @@
 #pragma once
 #include "Typedefs.h"
 #include <entt/entt.hpp>
-#include "ResourceManager.h" // TEMP
 #include "Window.h"
 #include "Editor/EditorCamera.h"
 
 class Application
 {
-	friend int main(void);
+    friend int main(void);
 
 public:
-	Application();
-	virtual ~Application();
-
-public:
-
-	virtual void Initialize(void) = 0;
-	virtual void Update(float deltaTime) = 0;
-	virtual void Shutdown(void) = 0;
-	virtual bool ShouldClose(void) = 0;
-
-protected:
-
-	void InitWindow(int width, int height, const char* title);
+    Application();
+    virtual ~Application();
 
 private:
 
-	void Run(void);
+    Application(const Application* app) = delete;
+
+public:
+
+    virtual void Initialize(void) = 0;
+    virtual void Update(float deltaTime) = 0;
+    virtual void Shutdown(void) = 0;
+    virtual bool ShouldClose(void) = 0;
 
 protected:
 
-	std::shared_ptr<Window> m_window;
+    void InitWindow(int width, int height, const char* title);
 
-	ResourceManager m_resourceManager;
+private:
 
-	entt::registry m_registry;
+    void Run(void);
 
-	float m_currentFrameTime;
-	float m_previousFrameTime;
-	float m_deltaTime;
-	float m_totalTime;
-	uint64 m_currentFrame;
+protected:
 
-	EditorCamera m_editorCamera;
+    std::shared_ptr<Window> m_window;
+
+    entt::registry m_registry;
+
+    float m_currentFrameTime;
+    float m_previousFrameTime;
+    float m_deltaTime;
+    float m_totalTime;
+    uint64 m_currentFrame;
 };
 
 std::unique_ptr<Application> CreateApplication();

@@ -7,23 +7,23 @@
 int main(void)
 {
 #if _DEBUG
-	// ConsoleWindow::CreateNewConsole();
+    ConsoleWindow::CreateNewConsole();
 
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
 #endif
 
-	std::unique_ptr<Application> app = CreateApplication();
+    std::unique_ptr<Application> app = CreateApplication();
 
-	app->Initialize();
-	app->Run();
-	app->Shutdown();
+    app->Initialize();
+    app->Run();
+    app->Shutdown();
 
-	app.reset();
+    app.reset();
 
 #if _DEBUG
-	// ConsoleWindow::ReleaseConsole();
+    ConsoleWindow::ReleaseConsole();
 #endif
 
-	return 0;
+    return 0;
 }

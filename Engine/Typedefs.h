@@ -4,7 +4,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
-#include <Windows.h> // TEMP?
+#include <Windows.h>
 
 #define GLM_ENABLE_EXPERIMENTAL 1
 #include <glm/glm.hpp>
@@ -27,6 +27,7 @@ using uint32 = uint32_t;
 using uint64 = uint64_t;
 
 using Guid = uint64;
+using Color = glm::vec4;
 
 #define VEC3_RIGHT glm::vec3(1.0f, 0.0f, 0.0f)
 #define VEC3_LEFT (-VEC3_RIGHT)

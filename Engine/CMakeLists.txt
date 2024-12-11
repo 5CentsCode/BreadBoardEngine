@@ -5,34 +5,26 @@ set(AppName "Engine")
 set(componentFiles
     "Components/Camera.h" "Components/Camera.cpp"
     "Components/Transform.h" "Components/Transform.cpp"
-    "Components/Light.h"
-    "Components/MeshRenderer.h"
-    "Components/RectTransform.h" "Components/RectTransform.cpp"
-    "Components/Sprite.h"
 )
-
-set(systemFiles
-    "Systems/EnttSystem.h"
-    "Systems/RenderSystem.h" "Systems/RenderSystem.cpp"
-  )
 
 set(sourceFiles
     "Application.h" "Application.cpp"
     "ConsoleWindow.h" "ConsoleWindow.cpp"
+    "Draw.h" "Draw.cpp"
     "KeyCodes.h"
     "Input.h" "Input.cpp"
     "Main.cpp"
-    "Material.h"
-    "Mesh.h" "Mesh.cpp"
-    "Resource.h"
-    "StaticRenderer.h" "StaticRenderer.cpp"
-    "ResourceManager.h" "ResourceManager.cpp"
     "Shader.h" "Shader.cpp"
     "Typedefs.h"
-    "Texture.h" "Texture.cpp"
-    "Vertex.h"
-    "VertexAttribute.h"
     "Window.h" "Window.cpp"
+)
+
+set(DataTypeFiles
+    "DataType/Image.h" "DataType/Image.cpp"
+    "DataType/Material.h" "DataType/Material.cpp"
+    "DataType/Mesh.h" "DataType/Mesh.cpp"
+    "DataType/Model.h" "DataType/Model.cpp"
+    "DataType/Texture.h" "DataType/Texture.cpp"
 )
 
 set(EditorFiles
@@ -44,6 +36,7 @@ set(BreadBoardSource
     ${systemFiles}
     ${sourceFiles}
     ${EditorFiles}
+    ${DataTypeFiles}
 )
 
 foreach( sourceFile IN ITEMS ${BreadBoardSource} )

@@ -7,17 +7,17 @@
 class ConsoleWindow
 {
 public:
-	ConsoleWindow(uint16 bufferLength = 2048);
-	~ConsoleWindow();
+    ConsoleWindow(uint16 bufferLength = 2048);
+    ~ConsoleWindow();
 
 public:
-	static bool CreateNewConsole(uint16 bufferLength = 2048);
-	static bool AttachParentConsole(uint16 bufferLength = 2048);
-	static void AdjustConsoleBuffer(uint16 bufferLength);
-	static bool ReleaseConsole();
+    static bool CreateNewConsole(uint16 bufferLength = 2048);
+    static bool AttachParentConsole(uint16 bufferLength = 2048);
+    static void AdjustConsoleBuffer(int16 bufferLength);
+    static bool ReleaseConsole();
 
 private:
-	static bool RedirectConsoleIO();
+    static bool RedirectConsoleIO();
 };
 
 #endif
